@@ -255,3 +255,14 @@ body.dark .welcome{background:linear-gradient(115deg,var(--card),#1c2e4c 72%,#27
   .welcome::after{display:none}
   .welcome-copy::before{display:none}
 }
+body.dark .welcome-copy h1{color:#17223b}
+body.dark .welcome-copy h1 em{color:#1747c8}
+body.dark .welcome-copy .eyebrow{color:#1747c8}
+body.dark .welcome-copy>p{color:#334365}
+.page-hero.compact-hero{padding-block:clamp(18px,2.2vw,24px)}
+.page-hero.compact-hero h1{margin:8px 0 10px;font-size:clamp(34px,4vw,48px);text-wrap:balance}
+.page-hero.compact-hero p{max-width:760px;margin:0;line-height:1.6;text-wrap:balance}
+.lab-page .page-hero.compact-hero{padding-inline:clamp(24px,5vw,64px)}
+.topnav a{flex:1;min-width:82px;text-align:center}
+@media(max-width:760px){.topnav a{flex:0 0 auto}}
+html{scrollbar-gutter:stable}
