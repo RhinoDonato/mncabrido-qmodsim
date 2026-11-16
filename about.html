@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f3f6fc" />
+  <title>About · MNCabrido iFix7 RepairOps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="MNCabrido home">
+      <img src="assets/mn-cabrido-logo.png" alt="MNCabrido logo" />
+      <span><strong>MNCabrido</strong><small>QMODSIM simulation lab</small></span>
+    </a>
+    <nav class="topnav" aria-label="Simulation navigation">
+      <a href="index.html">Scenarios</a><a href="lab.html">Lab</a><a href="concepts.html">Concepts</a><a href="guides.html">Guides</a><a class="active" aria-current="page" href="about.html">About</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch color theme"><span id="themeIcon">☾</span><span id="themeText">Dark</span></button>
+  </header>
+  <main class="site-page">
+    <section class="page-hero compact-hero about-hero">
+      <div class="eyebrow">Project-Based Learning Project</div>
+      <h1>MNCabrido iFix7<br /><em>RepairOps</em></h1>
+      <p>Web-Based Repair Service Management and Monitoring System. A proposed system shaped around the shop’s current workflow and records.</p>
+    </section>
+
+    <section class="company-profile" aria-labelledby="companyTitle">
+      <article class="company-story">
+        <span class="section-kicker">The business</span>
+        <h2 id="companyTitle">About MNCabrido</h2>
+        <p>MNCabrido is a local repair business in Barangay West Rembo, Taguig City. It provides repair and troubleshooting services for laptops, desktops, and printers.</p>
+        <p>The owner oversees most operations, including the repair process and the records needed to manage the business.</p>
+      </article>
+      <aside class="company-facts" aria-label="Business details">
+        <div><span>Location</span><strong>Barangay West Rembo, Taguig City</strong></div>
+        <div><span>Devices</span><strong>Laptops · Desktops · Printers</strong></div>
+        <div><span>Current records</span><strong>Job order forms · Paper · Excel</strong></div>
+      </aside>
+    </section>
+
+    <section class="company-operations" aria-labelledby="projectNeedTitle">
+      <div class="section-heading">
+        <span class="section-kicker">Why RepairOps is proposed</span>
+        <h2 id="projectNeedTitle">Bring repair records and progress into one view.</h2>
+        <p class="section-intro">Customer, device, repair, and transaction details currently span paper records and a self-developed Excel dashboard. The proposed web system aims to make those records easier to organize and repair progress easier to monitor.</p>
+      </div>
+      <div class="project-scope">
+        <article class="info-card"><span class="card-index">01 · Records</span><h3>Centralized job history</h3><p>Keep customer, device, job order, diagnosis, repair notes, and status history connected in one record.</p></article>
+        <article class="info-card"><span class="card-index">02 · Workflow</span><h3>Clear repair progress</h3><p>Track intake, diagnosis, quotation, approval, repair, and release—including jobs that need longer troubleshooting.</p></article>
+        <article class="info-card"><span class="card-index">03 · Shop operations</span><h3>Parts and payments</h3><p>Record parts needed for each job, supplier and order status, plus charges, downpayments, balances, and payment status.</p></article>
+        <article class="info-card"><span class="card-index">04 · Monitoring</span><h3>Dashboards and updates</h3><p>Give the owner repair and financial summaries, with planned customer status notifications when a device is ready for release.</p></article>
+      </div>
+      <p class="owner-note"><strong>Scope note.</strong> Parts are recorded per repair job; the proposal does not describe a general inventory system. Email is the initial notification channel, with SMS dependent on an available service.</p>
+    </section>
+
+    <section class="company-operations" aria-labelledby="workflowTitle">
+      <div class="section-heading">
+        <span class="section-kicker">Proposed repair workflow</span>
+        <h2 id="workflowTitle">From device intake to release.</h2>
+      </div>
+      <ol class="repair-steps">
+        <li><span>01</span><strong>Intake &amp; job order</strong></li>
+        <li><span>02</span><strong>Diagnosis</strong></li>
+        <li><span>03</span><strong>Quotation &amp; approval</strong></li>
+        <li><span>04</span><strong>Repair &amp; parts</strong></li>
+        <li><span>05</span><strong>Payment</strong></li>
+        <li><span>06</span><strong>Release &amp; update</strong></li>
+      </ol>
+    </section>
+
+    <section class="company-operations" aria-labelledby="usersTitle">
+      <div class="section-heading">
+        <span class="section-kicker">Who the proposed system serves</span>
+        <h2 id="usersTitle">Shop staff manage the records; customers receive updates.</h2>
+      </div>
+      <div class="project-users">
+        <article class="info-card"><span class="card-index">Owner / Administrator</span><h3>Oversees the business</h3><p>Manages customers, job orders, staff assignments, payments, expenses, reports, and other shop records.</p></article>
+        <article class="info-card"><span class="card-index">Technician</span><h3>Records repair work</h3><p>Views assigned jobs and records diagnosis, repair notes, parts needed, and repair status.</p></article>
+        <article class="info-card"><span class="card-index">Customer</span><h3>Receives important updates</h3><p>No account or online booking is required. Staff record customer details at the shop; notifications can share key repair updates.</p></article>
+      </div>
+    </section>
+
+    <footer><span>MNCabrido iFix7 RepairOps · QMODSIM learning lab</span><a href="index.html">Explore simulations</a></footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
