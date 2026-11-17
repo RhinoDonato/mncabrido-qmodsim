@@ -4446,172 +4446,277 @@ body.dark .team-portrait {
 }
 
 /* Full-bleed hero: the artwork now spans the complete header behind the copy. */
-@media(min-width:901px) {
-  .welcome {
-    display: flex;
-    align-items: center;
-    min-height: clamp(350px, 31vw, 440px);
-    padding: clamp(30px, 5vw, 64px);
-    position: relative;
-    isolation: isolate
-  }
+@media(min-width:901px){
+  .welcome{display:flex;align-items:center;min-height:clamp(350px,31vw,440px);padding:clamp(30px,5vw,64px);position:relative;isolation:isolate}
+  .welcome-art{position:absolute;inset:0;z-index:0;width:100%;height:100%;min-height:0;aspect-ratio:auto;margin:0;border-radius:inherit;box-shadow:none;background:linear-gradient(105deg,#f4f7ff 0%,#e4eeff 28%,#c3d9ff 51%,#82aef0 100%)}
+  .hero-banner-image{position:absolute;top:0;right:-22px;width:auto;height:100%;max-width:none;object-fit:contain;object-position:right center;border-radius:inherit;-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 22%);mask-image:linear-gradient(90deg,transparent 0%,#000 22%)}
+  .welcome::before{z-index:1}
+  .welcome::after{display:none}
+  .welcome-copy{width:min(48%,560px);max-width:560px;flex:none;z-index:3;padding:28px 0}
+  .welcome-copy::before{display:none}
+  .welcome-copy h1{font-size:clamp(40px,3.4vw,48px)}
+  .welcome-copy>p{font-size:16px;max-width:440px}
+}
+@media(max-width:900px){
+  .welcome{display:grid;grid-template-columns:minmax(0,1fr);min-height:0;gap:18px;padding:24px 22px 0}
+  .welcome-copy{width:100%;max-width:620px;margin:0;z-index:2}
+  .welcome-art{position:relative;inset:auto;z-index:1;width:100%;max-width:680px;height:auto;min-height:0;aspect-ratio:2.6;margin:0 auto 0 0;box-shadow:0 14px 30px rgba(24,64,151,.16)}
+  .hero-banner-image{position:absolute;top:0;right:0;width:100%;height:100%;max-width:100%;object-fit:cover;object-position:center}
+  .welcome::after{display:none}
+  .welcome-copy::before{display:none}
+}
+body.dark .welcome-copy h1{color:#17223b}
+body.dark .welcome-copy h1 em{color:#1747c8}
+body.dark .welcome-copy .eyebrow{color:#1747c8}
+body.dark .welcome-copy>p{color:#334365}
+.page-hero.compact-hero{padding-block:clamp(18px,2.2vw,24px)}
+.page-hero.compact-hero h1{margin:8px 0 10px;font-size:clamp(34px,4vw,48px);text-wrap:balance}
+.page-hero.compact-hero p{max-width:760px;margin:0;line-height:1.6;text-wrap:balance}
+.lab-page .page-hero.compact-hero{padding-inline:clamp(24px,5vw,64px)}
+.topnav a{flex:1;min-width:82px;text-align:center}
+@media(max-width:760px){.topnav a{flex:0 0 auto}}
+html{scrollbar-gutter:stable}
 
-  .welcome-art {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    width: 100%;
-    height: 100%;
-    min-height: 0;
-    aspect-ratio: auto;
-    margin: 0;
-    border-radius: inherit;
-    box-shadow: none;
-    background: linear-gradient(105deg, #f4f7ff 0%, #e4eeff 28%, #c3d9ff 51%, #82aef0 100%)
-  }
+/* Independent homepage portraits; the curved hero background stays on its own layer. */
+.welcome-copy h1 em::after{content:none;display:none}
+.welcome .welcome-art{position:relative;inset:auto;z-index:2;flex:1;align-self:end;width:100%;max-width:none;min-width:0;height:auto;min-height:0;aspect-ratio:auto;margin:0;padding:8px 8px 12px;overflow:visible;border:0;border-radius:0;background:none;box-shadow:none;filter:none;animation:none}
+/* The supplied workplace photo stays independent of every interactive portrait. */
+.welcome:has(.hero-team){background:linear-gradient(100deg,rgba(244,247,255,.98) 0%,rgba(228,238,255,.95) 32%,rgba(207,225,255,.48) 58%,rgba(174,205,255,.12) 100%),url('assets/hero-workplace.jpg') center 46% / cover no-repeat}
+.welcome:has(.hero-team)::before{animation:none;transform:none;background:none;pointer-events:none}
+@media(max-width:900px){.welcome:has(.hero-team){background-image:linear-gradient(180deg,rgba(244,247,255,.98) 0%,rgba(228,238,255,.94) 35%,rgba(207,225,255,.28) 70%,rgba(174,205,255,.12) 100%),url('assets/hero-workplace.jpg');background-position:center,center bottom}}
+.welcome:has(.hero-team)::after{content:none;display:none}
+.hero-team{position:relative;left:12px;width:100%;aspect-ratio:1.68;isolation:isolate}
+.hero-person{position:absolute;bottom:0;display:block;width:32%;min-width:0;min-height:44px;padding:0;border:0;border-radius:0;background:transparent;cursor:pointer;transform:none;transition:none;touch-action:manipulation;z-index:var(--hero-depth,1)}
+.hero-person:nth-child(1){left:-19.19%;width:38.78%;--hero-depth:2}
+.hero-person:nth-child(2){left:0.405%;width:39.84%;--hero-depth:3}
+.hero-person:nth-child(3){left:21.44%;width:43.39%;bottom:0%;--hero-depth:5}
+.hero-person:nth-child(4){left:45.28%;width:39.84%;--hero-depth:3}
+.hero-person:nth-child(5){left:66.76%;width:36.63%;bottom:2%;--hero-depth:1}
+/* Keep portraits opaque before compositing; the group owns the single lower-edge fade. */
+.hero-person img{display:block;width:100%;height:auto;aspect-ratio:.72;object-fit:cover;object-position:center;border-radius:0;-webkit-mask-image:none;mask-image:none}
+.hero-person:focus-visible{outline:3px solid #1747c8;outline-offset:3px}
+.hero-team .hero-person:is(:focus-visible,[aria-pressed="true"],.is-hovered){transform:none}
+.hero-greeting{position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%);width:max-content;max-width:150px;padding:7px 10px;border:1px solid #b8cdf5;border-radius:10px;background:#fff;color:#1747c8;box-shadow:0 4px 14px #1747c81a;font-size:12px;line-height:1.4;font-weight:700;text-align:center;visibility:hidden;opacity:0;transition:opacity .18s ease,visibility .18s ease;pointer-events:none}
+.hero-greeting::after{content:"";position:absolute;top:100%;left:calc(50% - 5px);border:5px solid transparent;border-top-color:#fff}
+.hero-greeting.is-visible{visibility:visible;opacity:1}
 
-  .hero-banner-image {
-    position: absolute;
-    top: 0;
-    right: -22px;
-    width: auto;
-    height: 100%;
-    max-width: none;
-    object-fit: contain;
-    object-position: right center;
-    border-radius: inherit;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 22%);
-    mask-image: linear-gradient(90deg, transparent 0%, #000 22%)
-  }
+@media(min-width:901px){.welcome{gap:18px;padding-left:clamp(28px,3.5vw,48px);padding-right:32px}.welcome .welcome-art{align-self:center}.welcome-copy{width:46%}}
+@media(max-width:900px){.welcome .welcome-art{max-width:680px;margin-inline:auto;padding-top:8px}.hero-person{max-width:none}}
+@media(max-width:480px){.welcome{padding-inline:14px}.hero-team{aspect-ratio:1.68}.hero-greeting{max-width:110px;font-size:12px;padding:6px 8px}}
+@media(prefers-reduced-motion:reduce){.hero-person,.hero-greeting{transition:none}.welcome .hero-person{transform:none}}
 
-  .welcome::before {
-    z-index: 1
-  }
+/* No decorative foreground strips over the team. */
+.welcome .welcome-art::after{content:none;display:none}
+.welcome .welcome-art::before{display:none}
+.hero-person:focus-visible{outline-offset:-8px}
+@media(max-width:480px){.hero-greeting{max-width:100px}}
 
-  .welcome::after {
-    display: none
-  }
+/* PNG alpha hit testing in app.js lets transparent pixels pass through to the visible teammate. */
+.hero-team{pointer-events:auto}
+.hero-person,.hero-person img{pointer-events:none}
+/* Include the enlarged silhouettes outside the layout box in pointer routing. */
+.hero-team::before{content:"";position:absolute;inset:-64px -8% -12px;z-index:-1;pointer-events:auto}
 
-  .welcome-copy {
-    width: min(48%, 560px);
-    max-width: 560px;
-    flex: none;
-    z-index: 3;
-    padding: 28px 0
-  }
+/* Compact vertical spacing; portrait widths and horizontal positions stay unchanged. */
+.welcome:has(.hero-team){min-height:0;padding-block:48px 8px}
+.hero-greetings{position:absolute;inset:0;z-index:6;pointer-events:none}
+.hero-greetings .hero-greeting{top:var(--greeting-top,0px);bottom:auto;left:var(--greeting-left,50%);max-width:150px;transition:opacity .12s ease}
+@media(max-width:900px){
+ .welcome:has(.hero-team){padding-block:16px 0;gap:0}
+ .welcome .welcome-art{padding-top:42px;padding-bottom:4px}
+}
+@media(max-width:480px){.hero-greetings .hero-greeting{max-width:140px}}
+@media(prefers-reduced-motion:reduce){.hero-greetings .hero-greeting{transition:none}}
+.hero-greeting::after{left:calc(var(--greeting-arrow,50%) - 5px)}
 
-  .welcome-copy::before {
-    display: none
-  }
+/* Stacked layouts already use the full available width; preserve left-edge clearance. */
+@media(max-width:900px){.hero-team{left:0}}
 
-  .welcome-copy h1 {
-    font-size: clamp(40px, 3.4vw, 48px)
-  }
+@media(max-width:900px){.hero-person:nth-child(1){left:-7.192%}.hero-person:nth-child(2){left:10.83%}.hero-person:nth-child(3){left:29.9%;bottom:0%}.hero-person:nth-child(4){left:52.83%}.hero-person:nth-child(5){left:70.76%}}
+@media(min-width:901px) and (max-width:1199px){.welcome-copy>p{max-width:min(100%,320px)}}
 
-  .welcome-copy>p {
-    font-size: 16px;
-    max-width: 440px
-  }
+/* Homepage dark theme: keep the same photo and layout, darkening only the background. */
+body.dark .welcome:has(.hero-team){
+ background-image:linear-gradient(100deg,rgba(12,23,43,.98) 0%,rgba(16,31,54,.94) 32%,rgba(20,39,65,.80) 48%,rgba(23,46,76,.48) 72%,rgba(22,43,72,.40) 100%),url('assets/hero-workplace.jpg');
+ background-size:cover;
+ background-position:center 46%;
+ background-repeat:no-repeat;
+ border-color:#344862;
+ outline:none;
+ box-shadow:0 12px 28px rgba(0,0,0,.16);
+}
+body.dark .welcome:has(.hero-team) .welcome-copy h1{color:#edf3ff}
+body.dark .welcome:has(.hero-team) .welcome-copy h1 em{color:#79a6ff}
+body.dark .welcome:has(.hero-team) .welcome-copy>p{color:#c6d3e8}
+body.dark .welcome:has(.hero-team) .welcome-copy .eyebrow{color:#8db5ff}
+body.dark .welcome:has(.hero-team) .hero-greeting{background:#203451;color:#eaf2ff;border-color:#465e80;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+body.dark .welcome:has(.hero-team) .hero-greeting::after{border-top-color:#203451}
+body.dark .welcome:has(.hero-team) .hero-person:focus-visible{outline-color:#8db5ff}
+@media(max-width:900px){
+ body.dark .welcome:has(.hero-team){background-position:center,center bottom;background-image:linear-gradient(180deg,rgba(12,23,43,.98) 0%,rgba(16,31,54,.94) 35%,rgba(20,39,65,.70) 55%,rgba(23,46,76,.44) 75%,rgba(22,43,72,.38) 100%),url('assets/hero-workplace.jpg')}
 }
 
-@media(max-width:900px) {
-  .welcome {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    min-height: 0;
-    gap: 18px;
-    padding: 24px 22px 0
-  }
-
-  .welcome-copy {
-    width: 100%;
-    max-width: 620px;
-    margin: 0;
-    z-index: 2
-  }
-
-  .welcome-art {
-    position: relative;
-    inset: auto;
-    z-index: 1;
-    width: 100%;
-    max-width: 680px;
-    height: auto;
-    min-height: 0;
-    aspect-ratio: 2.6;
-    margin: 0 auto 0 0;
-    box-shadow: 0 14px 30px rgba(24, 64, 151, .16)
-  }
-
-  .hero-banner-image {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    object-fit: cover;
-    object-position: center
-  }
-
-  .welcome::after {
-    display: none
-  }
-
-  .welcome-copy::before {
-    display: none
-  }
+/* Fade the composited team once, in a shared coordinate system. The wider mask
+   includes the overlapping silhouettes outside the team's layout box. Greetings
+   live in the sibling .hero-greetings layer and remain fully opaque. */
+.hero-team{
+ -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 80%,rgba(0,0,0,.96) 84%,rgba(0,0,0,.76) 88%,rgba(0,0,0,.40) 92%,rgba(0,0,0,.10) 95%,transparent 98%,transparent 100%);
+ mask-image:linear-gradient(to bottom,#000 0%,#000 80%,rgba(0,0,0,.96) 84%,rgba(0,0,0,.76) 88%,rgba(0,0,0,.40) 92%,rgba(0,0,0,.10) 95%,transparent 98%,transparent 100%);
+ -webkit-mask-size:150% 100%;mask-size:150% 100%;
+ -webkit-mask-position:center top;mask-position:center top;
+ -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+ -webkit-mask-clip:no-clip;mask-clip:no-clip;
 }
 
-body.dark .welcome-copy h1 {
-  color: #17223b
+/* Shared stable header: equal side columns keep the navigation at the viewport center. */
+.topbar .topnav{gap:4px;padding:4px;border:1px solid var(--line);border-radius:12px;background:var(--card);box-shadow:none}
+.topbar .topnav a{display:flex;align-items:center;justify-content:center;min-width:0;height:36px;min-height:36px;padding:8px 10px;border:0;border-radius:8px;color:var(--muted);background:transparent;font-size:12px;line-height:20px;font-weight:600;white-space:nowrap;text-align:center;transition:background-color .16s ease,color .16s ease}
+.topbar .topnav a:hover{background:var(--blue-3);color:var(--ink)}
+.topbar .topnav a.active,.topbar .topnav a[aria-current="page"]{background:#1747c8;color:#fff}
+.topbar .topnav a:focus-visible{outline:2px solid var(--blue);outline-offset:0}
+.topbar .theme-toggle{width:90px;min-width:90px;height:40px;min-height:40px;justify-content:center}
+@media(min-width:761px){
+ .topbar{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:12px;height:72px;min-height:72px;padding:0 clamp(16px,3.8vw,58px);flex-wrap:nowrap}
+ .topbar .brand{grid-column:1;grid-row:1;justify-self:start;min-width:0;order:0}
+ .topbar .topnav{grid-column:2;grid-row:1;justify-self:center;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));width:clamp(390px,33vw,430px);max-width:100%;margin:0;order:0}
+ .topbar .theme-toggle{grid-column:3;grid-row:1;justify-self:end;position:static;margin:0;order:0}
 }
-
-body.dark .welcome-copy h1 em {
-  color: #1747c8
+@media(min-width:761px) and (max-width:950px){
+ .topbar{padding-inline:16px;gap:8px}
+ .topbar .brand{gap:8px}
+ .topbar .brand img{width:36px;height:36px}
+ .topbar .topnav{width:360px}
+ .topbar .topnav a{font-size:11px;padding-inline:8px}
 }
-
-body.dark .welcome-copy .eyebrow {
-  color: #1747c8
+@media(max-width:760px){
+ .topbar{display:grid;grid-template-columns:minmax(0,1fr) auto;height:auto;min-height:0;padding:8px 14px;gap:8px 12px}
+ .topbar .brand{grid-column:1;grid-row:1;justify-self:start;min-width:0;order:0}
+ .topbar .theme-toggle{grid-column:2;grid-row:1;justify-self:end;position:static;margin:0;order:0}
+ .topbar .topnav{grid-column:1/-1;grid-row:2;display:flex;justify-content:flex-start;width:100%;min-width:0;margin:0;overflow-x:auto;order:0;scrollbar-width:none}
+ .topbar .topnav a{flex:1 0 auto;min-width:60px;padding-inline:8px;font-size:clamp(10px,2.6vw,12px)}
 }
+@media(prefers-reduced-motion:reduce){.topbar .topnav a{transition:none}}
 
-body.dark .welcome-copy>p {
-  color: #334365
+/* Shared surface tokens retain the light palette and give dark mode a blue hierarchy. */
+:root{--brand-solid:#1747c8;--panel-radius:14px;--panel-padding:15px;--card-gradient:linear-gradient(145deg,var(--card),var(--card))}
+body.dark{
+ --paper:#0f172a;--soft:#162238;--card:#1b2a44;--surface-elevated:#243654;
+ --brand-solid:#2454d3;--blue:#91b5ff;--blue-2:#6b9aff;--blue-3:#243654;
+ --ink:#f1f5ff;--muted:#b8c7e0;--line:#344763;
+ --card-gradient:linear-gradient(145deg,#1b2a44,#20314d);
+ --shadow:0 8px 24px rgba(3,10,24,.15);
 }
-
-.page-hero.compact-hero {
-  padding-block: clamp(18px, 2.2vw, 24px)
+/* The chart and guide occupy the same desktop grid row and share its outer height. */
+.sim-body{align-items:stretch}
+.visual-panel,.character-guide{align-self:stretch;height:auto;border-radius:var(--panel-radius);padding:var(--panel-padding)}
+.character-guide{gap:14px;justify-content:center}
+.character-guide img{object-fit:contain;flex-shrink:0}
+.character-guide p{font-size:12px;line-height:1.65}
+.guide-role{font-size:12px;line-height:1.5}
+@media(max-width:1050px){
+ .sim-body{grid-template-columns:minmax(0,1fr)}
+ .control-panel{grid-column:1;grid-row:1}
+ .visual-panel{grid-column:1;grid-row:2}
+ .character-guide{grid-column:1;grid-row:3;flex-direction:row;justify-content:flex-start;align-items:center;text-align:left}
+ .character-guide img{width:100px;height:110px;flex:none}
 }
+@media(max-width:760px){.character-guide img{width:84px;height:96px}}
+/* Dark counterparts of the existing light gradients, with no overlay on content. */
+body.dark .page-hero,body.dark .concept-playground{background:linear-gradient(120deg,#1b2a44,#243b60)}
+body.dark :is(.scenario-card,.info-card,.service-card,.team-card,.company-story,.company-operations,.module-rail,.simulation,.metric){background:var(--card-gradient);border-color:var(--line)}
+body.dark :is(.visual-panel,.character-guide,.explain-card,.formula-card){background:linear-gradient(145deg,#162238,#1d2e49);border-color:var(--line)}
+body.dark :is(.control-panel,.company-facts,.playground-controls){background:var(--soft);border-color:var(--line)}
+body.dark .company-operations .info-card{background:var(--soft)}
+body.dark .scenario-card[href]:hover{border-color:#5b7ba8;box-shadow:var(--shadow)}
+body.dark .topbar .topnav{background:var(--soft);border-color:var(--line)}
+body.dark .topbar .topnav a:hover{background:var(--surface-elevated);color:var(--ink)}
+body.dark .topbar .topnav a:is(.active,[aria-current="page"]){background:var(--brand-solid);color:#fff}
+body.dark :is(.primary-link,.run-button,.contact-mark){background:var(--brand-solid);color:#fff}
+body.dark .filter-chip:is(.active,:hover){background:var(--brand-solid);border-color:var(--brand-solid);color:#fff}
+body.dark .module-button.selected{background:var(--surface-elevated);border-color:#4e6b95}
+body.dark .module-button.selected .module-icon{background:var(--brand-solid);border-color:var(--brand-solid);color:#fff}
+body.dark .reset-button:hover,body.dark .theme-toggle:hover{background:var(--surface-elevated);color:var(--ink)}
+body.dark .live-label{color:#87d7b5}
+body.dark .chart text{fill:var(--muted)}
+body.dark .chart .axis{stroke:#526b90}
+body.dark .chart .gridline{stroke:#344763;opacity:.75}
+body.dark .chart .plot{stroke:var(--blue-2)}
+body.dark .chart .point{fill:var(--blue-2);stroke:var(--card)}
+body.dark .chart .area{fill:#426fd2;opacity:.22}
+body.dark .chart .bar{fill:var(--blue-2)}
+body.dark .chart .bar-alt{fill:#b0c8ff}
+body.dark .chart .plot2{stroke:#f2b661}
+body.dark .legend-dot.alt{background:#f2b661}
+body.dark .chart .success{fill:#79d3b0}
+body.dark .chart .danger{fill:#f4a497}
+body.dark .payoff-table .positive{color:#8be0bb}
+body.dark .payoff-table .negative{color:#ffaaa3}
 
-.page-hero.compact-hero h1 {
-  margin: 8px 0 10px;
-  font-size: clamp(34px, 4vw, 48px);
-  text-wrap: balance
-}
+@media(max-width:760px){.visual-panel,.character-guide{padding:12px}}
 
-.page-hero.compact-hero p {
-  max-width: 760px;
-  margin: 0;
-  line-height: 1.6;
-  text-wrap: balance
-}
+/* Font-independent theme icons and a consistently aligned brand lockup. */
+.topbar .brand{display:flex;align-items:center;gap:10px;margin:0;padding:0}
+.topbar .brand>span{display:grid;gap:3px;line-height:1.2}
+.topbar .brand strong{margin:0;padding:0;font-size:16px;font-weight:800;line-height:1.2}
+.topbar .brand small{margin:0;padding:0;font-family:var(--font-body);font-size:10px;font-weight:500;letter-spacing:.1px;line-height:1.3;color:var(--muted);white-space:nowrap}
+.topbar .brand img{display:block;flex:none;margin:0}
+.topbar .theme-toggle{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:90px;min-width:90px;max-width:90px;height:40px;min-height:40px;max-height:40px;gap:8px;margin:0;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);box-shadow:none}
+.topbar #themeIcon{display:grid;place-items:center;flex:0 0 18px;width:18px;height:18px;line-height:1;color:var(--blue)}
+.topbar #themeIcon svg{grid-area:1/1;display:block;width:18px;height:18px;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.topbar #themeIcon .theme-icon-sun,body.dark .topbar #themeIcon .theme-icon-moon{display:none}
+body.dark .topbar #themeIcon .theme-icon-sun{display:block}
+.topbar #themeText{margin:0;padding:0;font-size:12px;font-weight:700;line-height:18px;letter-spacing:0;white-space:nowrap}
+@media(max-width:950px){.topbar .brand strong{font-size:14px}.topbar .brand small{font-size:9px}}
+@media(max-width:420px){.topbar .brand strong{font-size:13px}.topbar .brand small{font-size:8.5px}}
 
-.lab-page .page-hero.compact-hero {
-  padding-inline: clamp(24px, 5vw, 64px)
-}
+/* Guides page only: five equal portrait cards, with the team leader centered. */
+.guides-page .page-section{padding:30px 0 26px}
+.guides-page .guide-team{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;align-items:stretch}
+.guides-page .guide-team .team-card{position:relative;display:flex;flex-direction:column;min-width:0;height:100%;padding:10px 10px 18px;border:1px solid var(--line);border-radius:22px;background:var(--card);box-shadow:0 8px 22px rgba(23,71,200,.06);color:var(--ink);transform:none;transition:background-color .18s ease,border-color .18s ease,color .18s ease}
+.guides-page .guide-team .guide-portrait{display:block;flex:none;width:100%;height:auto;aspect-ratio:1/1.05;object-fit:cover;object-position:center 15%;border-radius:15px;background:#dce9ff}
+.guides-page .guide-team .guide-label{margin:12px 6px 5px;color:var(--blue);font-size:11px;font-weight:800;line-height:1.5;letter-spacing:.45px;transition:color .18s ease}
+.guides-page .guide-team .team-card h3{min-height:1.3em;margin:0 6px 7px;font:800 17px/1.3 var(--font-head);letter-spacing:-.35px;overflow-wrap:anywhere;transition:color .18s ease}
+.guides-page .guide-team .team-card p{margin:0 6px;color:var(--muted);font-size:12px;line-height:1.65;transition:color .18s ease}
+.guides-page .guide-team .team-card:hover,.guides-page .guide-team:not(:has(.team-card:hover)) .team-card:focus-visible{background:var(--brand-solid);border-color:var(--brand-solid);color:#fff;transform:none}
+.guides-page .guide-team .team-card:hover :is(.guide-label,h3,p),.guides-page .guide-team:not(:has(.team-card:hover)) .team-card:focus-visible :is(.guide-label,h3,p){color:#fff}
+.guides-page .guide-team:not(:has(.team-card:hover)) .team-card:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+body.dark.guides-page .guide-team .team-card{background:#1b2a44;border-color:var(--line);box-shadow:none}
+body.dark.guides-page .guide-team .team-card:hover,body.dark.guides-page .guide-team:not(:has(.team-card:hover)) .team-card:focus-visible{background:#2454d3;border-color:#2454d3;color:#fff}
+@media(max-width:1049px){.guides-page .guide-team{grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 16px}}
+@media(max-width:700px){.guides-page .guide-team{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:460px){.guides-page .guide-team{grid-template-columns:minmax(0,1fr)}.guides-page .guide-team .team-card h3{min-height:0}}
+@media(prefers-reduced-motion:reduce){.guides-page .guide-team .team-card,.guides-page .guide-team .team-card :is(.guide-label,h3,p){transition:none}}
 
-.topnav a {
-  flex: 1;
-  min-width: 82px;
-  text-align: center
-}
+/* Lab guide presentation only; the existing chart/grid sizing remains shared. */
+.lab-page .character-guide{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:14px;padding:18px;min-width:0;text-align:center;background:linear-gradient(155deg,#f2f6ff 0%,#fff 65%)}
+.lab-page .character-guide>img{display:block;flex:none;width:128px;max-width:100%;height:145px;object-fit:contain;object-position:center bottom;border-radius:14px;background:#e3edff}
+.lab-page .character-guide .guide-profile{display:flex;flex-direction:column;align-items:center;gap:9px;width:100%;min-width:0}
+.lab-page .character-guide .guide-role{display:inline-flex;align-items:center;justify-content:center;gap:6px;max-width:100%;margin:0;padding:5px 10px;border-radius:999px;background:#e7efff;color:#1747c8;font-size:11px;font-weight:800;line-height:1.5}
+.lab-page .character-guide .guide-role svg{flex:none}
+.lab-page .character-guide .guide-name{margin:0;color:var(--ink);font:800 19px/1.25 var(--font-head);letter-spacing:-.35px;overflow-wrap:anywhere}
+.lab-page .character-guide .guide-description{max-width:44ch;margin:0;color:var(--muted);font-size:12px;line-height:1.65}
+.lab-page .character-guide .guide-tip{display:flex;align-items:center;gap:10px;width:100%;margin-top:auto;padding:12px;border:1px solid #dce7fc;border-radius:13px;background:#edf3ff;text-align:left}
+.lab-page .guide-tip-icon{display:flex;align-items:center;align-self:stretch;flex:none;padding-right:10px;border-right:1px solid #cadbfc;color:#2454d3}
+.lab-page .character-guide .guide-tip p{margin:0;color:#334b76;font-size:11px;line-height:1.65;overflow-wrap:anywhere}
+.lab-page .guide-tip strong{color:#1747c8;font-weight:700}
+body.dark .lab-page .character-guide{background:linear-gradient(145deg,#1b2a44,#1d304e)}
+body.dark .lab-page .character-guide .guide-role{background:#263e66;color:#a9c6ff}
+body.dark .lab-page .character-guide .guide-tip{background:#203654;border-color:#3b5275}
+body.dark .lab-page .guide-tip-icon{color:#91b5ff;border-color:#46618a}
+body.dark .lab-page .character-guide .guide-tip p{color:#c8d7ee}
+body.dark .lab-page .guide-tip strong{color:#a9c6ff}
 
-@media(max-width:760px) {
-  .topnav a {
-    flex: 0 0 auto
-  }
-}
-
-html {
-  scrollbar-gutter: stable
+/* Lab charts: a centered flexible stage, with a viewport fitted to each chart type. */
+.lab-page .visual-panel{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:12px;align-items:stretch;min-width:0}
+.lab-page .visual-panel .panel-top{align-items:flex-start;margin:0;min-width:0}
+.lab-page .visual-panel .panel-title{font-size:12px;line-height:1.5}
+.lab-page .visual-panel .live-label{flex:none;line-height:1.8}
+.lab-page .chart-stage{display:flex;align-items:center;justify-content:safe center;min-width:0;min-height:0;width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.lab-page .chart-stage .chart{display:block;flex:0 0 auto;width:100%;max-width:none;min-width:0;height:auto;min-height:0;aspect-ratio:var(--chart-aspect);margin:0;overflow:visible}
+.lab-page .visual-panel .chart-legend{flex-wrap:wrap;align-items:flex-start;gap:6px 14px;margin:0;line-height:1.6}
+@media(max-width:600px){
+ .lab-page .chart-stage{min-block-size:clamp(140px,40vw,190px)}
+ .lab-page .chart-stage .chart text{font-size:var(--chart-label-size)}
+ .lab-page .visual-panel{gap:10px}
+ .lab-page .visual-panel .panel-top{flex-wrap:wrap;gap:4px 10px}
 }
