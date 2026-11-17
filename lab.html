@@ -1,4 +1,17 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="theme-color" content="#f3f6fc"/><title>Lab · MNCabrido QMODSIM</title><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/><link rel="stylesheet" href="styles.css"/></head>
-<body><header class="topbar"><a class="brand" href="index.html"><img src="assets/mn-cabrido-logo.png" alt="MNCabrido logo"/><span><strong>MNCabrido</strong><small>QMODSIM simulation lab</small></span></a><nav class="topnav" aria-label="Simulation navigation"><a href="index.html">Scenarios</a><a class="active" aria-current="page" href="lab.html">Lab</a><a href="concepts.html">Concepts</a><a href="guides.html">Guides</a><a href="about.html">About</a></nav><button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch color theme"><span id="themeIcon">☾</span><span id="themeText">Dark</span></button></header>
+<body><header class="topbar">
+    <a class="brand" href="index.html" aria-label="MNCabrido home">
+      <img src="assets/mn-cabrido-logo.png" alt="MNCabrido Repair Services logo" />
+      <span><strong>MNCabrido</strong><small>QMODSIM Simulation Lab</small></span>
+    </a>
+    <nav class="topnav" aria-label="Simulation navigation">
+      <a href="index.html">Scenarios</a>
+      <a class="active" aria-current="page" href="lab.html">Lab</a>
+      <a href="concepts.html">Concepts</a>
+      <a href="guides.html">Guides</a>
+      <a href="about.html">About</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch color theme"><span id="themeIcon" aria-hidden="true"><svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.9 13.1A9 9 0 0 1 10.9 3.1a9 9 0 1 0 10 10Z" /></svg><svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" focusable="false"><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" /></svg></span><span id="themeText">Dark</span></button>
+  </header>
 <main class="site-page lab-page"><section class="page-hero compact-hero"><div class="eyebrow">Interactive simulations</div><h1>Change a setting.<br/><em>See what changes.</em></h1><p>Choose a repair scenario, adjust its inputs, and explore the chart, results, and explanation together.</p></section><section class="lab-layout"><aside class="module-rail"><div class="rail-head"><strong>The Lab</strong><span class="module-count">7 simulations</span></div><nav class="module-nav" id="moduleNav" role="tablist" aria-label="Choose a simulation"></nav><div class="rail-note"><span class="note-mark">i</span><p>Each model is a teaching example. Results follow the assumptions shown.</p></div></aside><section class="simulation" id="simulation" aria-live="polite"></section></section><footer><span>MNCabrido QMODSIM · Interactive learning models</span><a href="concepts.html">Explore the concepts</a></footer></main><script src="app.js"></script></body></html>

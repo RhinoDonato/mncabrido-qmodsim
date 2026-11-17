@@ -21,12 +21,44 @@ const pct=n=>fmt(n*100,2)+'%';
 const val=(key)=>Number(byId('c-'+key)?.value ?? settings[current][key]);
 function nav(){byId('moduleNav').innerHTML=models.map(m=>`<button type="button" class="module-button ${m.id===current?'selected':''}" role="tab" aria-selected="${m.id===current}" data-model="${m.id}"><span class="module-icon">${m.icon}</span><span><strong>${m.short}</strong><small>${m.module}</small></span></button>`).join('');byId('moduleNav').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{current=b.dataset.model;nav();render()}))}
 function controlHTML(c){const [key,label,unit,min,max,step,initial]=c;const displayUnit=unit==='PHP'?'Philippine pesos':unit==='hour of day'?'hour after opening':unit==='spread'?'lognormal spread':unit;return `<label class="control" for="c-${key}"><span class="control-label"><span>${label}</span><output id="o-${key}"></output></span><small>${displayUnit}</small><input id="c-${key}" data-key="${key}" type="range" min="${min}" max="${max}" step="${step}" value="${settings[current][key]??initial}" /></label>`}
-function render(){const m=models.find(x=>x.id===current);const controls=m.controls.map(controlHTML).join('');const [image,role,message]=guides[current];byId('simulation').innerHTML=`<header class="sim-head"><div class="sim-title-wrap"><div class="sim-index">Simulation ${m.num} · ${m.module}</div><h2 class="sim-title">${m.title}</h2><p class="sim-subtitle">${m.subtitle}</p></div><span class="module-chip">${m.module}</span></header><div class="sim-body"><section class="visual-panel"><div class="panel-top"><span class="panel-title" id="chartTitle">Live model view</span><span class="live-label">Interactive</span></div><svg class="chart" id="chart" viewBox="0 0 600 240" role="img" aria-label="Simulation chart"></svg><div class="chart-legend" id="legend"></div></section><section class="control-panel"><div class="control-head">Adjust the scenario</div>${controls}<div class="run-row"><button class="reset-button" id="resetButton" type="button">Reset</button></div></section><aside class="character-guide"><img src="assets/characters/${image}" alt="${role}"/><div><span class="guide-role">${role}</span><p>${message}</p></div></aside></div><div class="metrics" id="metrics"></div><div class="learn-row"><article class="explain-card"><h3>What this model shows</h3><p>${m.about}</p></article><article class="formula-card"><h3>Math in plain view</h3><div class="formula">${m.formula}</div><p class="glossary">${m.terms}</p></article></div>`;
+// Presentation viewports only: keep the underlying SVG coordinates and scales intact.
+const chartLayouts={
+ arrival:{viewBox:'-24 10 624 232',width:624,height:232,labelSize:18},
+ queue:{viewBox:'-24 10 624 244',width:624,height:244,labelSize:17},
+ markov:{viewBox:'28 20 520 226',width:520,height:226,labelSize:16},
+ risk:{viewBox:'-28 10 628 232',width:628,height:232,labelSize:16},
+ game:{viewBox:'32 20 500 210',width:500,height:210,labelSize:15},
+ entropy:{viewBox:'40 56 490 190',width:490,height:190,labelSize:15},
+ reliability:{viewBox:'40 54 584 198',width:584,height:198,labelSize:16}
+};
+function chartHTML(model){
+ const layout=chartLayouts[model];
+ return `<div class="chart-stage" style="--chart-aspect:${layout.width}/${layout.height};--chart-label-size:${layout.labelSize}px"><svg class="chart" id="chart" viewBox="${layout.viewBox}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Simulation chart"></svg></div>`;
+}
+function guideCardHTML(image,role,message){
+ const [guideRole,guideName]=role.split(' \u00b7 ');
+ // Reuse the existing instruction verbatim; do not introduce new learning material.
+ const tip=message.slice(message.indexOf('. ')+2);
+ return `<aside class="character-guide"><img src="assets/characters/${image}" alt="${role}"/><div class="guide-profile"><span class="guide-role"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v15M3 4c3-1 6-1 9 1 3-2 6-2 9-1v15c-3-1-6-1-9 1-3-2-6-2-9-1V4Z"/></svg>${guideRole}</span><h3 class="guide-name">${guideName}</h3><p class="guide-description">${message}</p></div><div class="guide-tip" role="note"><span class="guide-tip-icon" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M9 18h6m-5 3h4M8.1 13.3a6 6 0 1 1 7.8 0c-1 .8-1.4 1.6-1.4 2.7h-5c0-1.1-.4-1.9-1.4-2.7ZM12 1v1M3.5 4.5l1 1m15-1-1 1M1 10h1m20 0h1"/></svg></span><p><strong>Guide tip:</strong> ${tip}</p></div></aside>`;
+}
+function render(){const m=models.find(x=>x.id===current);const controls=m.controls.map(controlHTML).join('');const [image,role,message]=guides[current];byId('simulation').innerHTML=`<header class="sim-head"><div class="sim-title-wrap"><div class="sim-index">Simulation ${m.num} · ${m.module}</div><h2 class="sim-title">${m.title}</h2><p class="sim-subtitle">${m.subtitle}</p></div><span class="module-chip">${m.module}</span></header><div class="sim-body"><section class="visual-panel" data-chart="${m.id}"><div class="panel-top"><span class="panel-title" id="chartTitle">Live model view</span><span class="live-label">Interactive</span></div>${chartHTML(m.id)}<div class="chart-legend" id="legend"></div></section><section class="control-panel"><div class="control-head">Adjust the scenario</div>${controls}<div class="run-row"><button class="reset-button" id="resetButton" type="button">Reset</button></div></section>${guideCardHTML(image,role,message)}</div><div class="metrics" id="metrics"></div><div class="learn-row"><article class="explain-card"><h3>What this model shows</h3><p>${m.about}</p></article><article class="formula-card"><h3>Math in plain view</h3><div class="formula">${m.formula}</div><p class="glossary">${m.terms}</p></article></div>`;
  byId('simulation').querySelectorAll('input[type=range]').forEach(i=>i.addEventListener('input',()=>{settings[current][i.dataset.key]=Number(i.value);showOutput(i.dataset.key);scheduleUpdate()}));byId('resetButton').addEventListener('click',()=>{if(riskTimer)clearTimeout(riskTimer);settings[current]={...defaults[current]};byId('simulation').querySelectorAll('input[type=range]').forEach(i=>i.value=settings[current][i.dataset.key]);riskTimer=0;update();byId('simulation').querySelectorAll('input').forEach(i=>showOutput(i.dataset.key))});update();byId('simulation').querySelectorAll('input').forEach(i=>showOutput(i.dataset.key));}
 function scheduleUpdate(){if(current==='risk'){if(riskTimer)clearTimeout(riskTimer);riskTimer=setTimeout(()=>{riskTimer=0;update()},180);return}if(inputFrame)return;inputFrame=requestAnimationFrame(()=>{inputFrame=0;update()})}
 function showOutput(k){const input=byId('c-'+k);const o=byId('o-'+k);if(!input||!o)return;const control=models.find(m=>m.id===current).controls.find(c=>c[0]===k);let v=Number(input.value),unit=control[2];o.value=unit==='PHP'?money(v):unit==='percent'?fmt(v,1)+'%':unit==='spread'?fmt(v,1):fmt(v,unit==='hour of day'?2:unit.includes('sec')?2:0)}
 function metricCards(items){byId('metrics').innerHTML=items.map(x=>`<div class="metric"><div class="metric-label">${x[0]}</div><div class="metric-value">${x[1]}</div><div class="metric-detail">${x[2]||''}</div></div>`).join('')}
-const svg=(s)=>byId('chart').innerHTML=s;
+function layoutChartLabels(chart){
+ if(current!=='entropy')return;
+ const label=chart.querySelector('text:last-child');
+ const parts=label.textContent.match(/^(\S+) (.+)$/);
+ if(!parts)return;
+ // Retain the exact axis-label text, separating its scale annotation visually.
+ const tick=document.createElementNS('http://www.w3.org/2000/svg','tspan');
+ tick.textContent=parts[1]+' ';
+ const annotation=document.createElementNS('http://www.w3.org/2000/svg','tspan');
+ annotation.setAttribute('x','330');annotation.setAttribute('dy','20');annotation.setAttribute('text-anchor','middle');
+ annotation.textContent=parts[2];label.replaceChildren(tick,annotation);
+}
+const svg=(s)=>{const chart=byId('chart');chart.innerHTML=s;layoutChartLabels(chart)};
 function axes(yMax,yUnit=''){let s='';for(let i=0;i<=4;i++){let y=205-i*43.75,v=yMax*i/4,label=yUnit==='%'?fmt(v*100,0)+'%':fmt(v,1)+yUnit;s+=`<line class="gridline" x1="48" y1="${y}" x2="582" y2="${y}"/><text x="39" y="${y+3}" text-anchor="end">${label}</text>`}s+='<line class="axis" x1="48" y1="205" x2="582" y2="205"/>';return s}
 function chartTitle(t,l=''){byId('chartTitle').textContent=t;byId('legend').innerHTML=l}
 function update(){if(current==='arrival')arrival();if(current==='queue')queue();if(current==='markov')markov();if(current==='risk')risk();if(current==='game')gameTheory();if(current==='entropy')entropy();if(current==='reliability')reliability()}
@@ -47,8 +79,101 @@ function gameTheory(){const cost=val('partCost'),margin=val('markup'),labor=val(
 function humanTime(s){if(!Number.isFinite(s)||s>3.154e16)return 'Over 1 billion years';if(s<1)return `${fmt(s*1000,1)} ms`;if(s<60)return `${fmt(s,1)} sec`;if(s<3600)return `${fmt(s/60,1)} min`;if(s<86400)return `${fmt(s/3600,1)} hr`;if(s<31557600)return `${fmt(s/86400,1)} days`;return `${fmt(s/31557600,1)} years`}
 function entropy(){const L=val('length'),R=val('rate'),Rt=val('limited'),sigma=62,H=L*Math.log2(sigma),seq=4*Math.log2(10),total=sigma**L,time=total/(2*R),limited=total/(2*Rt),axisMax=160,bars=[seq,H].map((x,i)=>{let w=x/axisMax*350,y=73+i*42;return `<text x="48" y="${y+14}">${i?'Secure token':'Sequential ID'}</text><rect class="${i?'bar':'bar-alt'}" x="165" y="${y}" width="${x/axisMax*350}" height="20"/><text x="${Math.min(522,172+x/axisMax*350)}" y="${y+14}">${fmt(x,1)} bits</text>`}).join(''),rateWidth=x=>(Math.log10(x)+2)/5*350;svg(`${bars}<text x="48" y="163">Guess rate</text><text x="48" y="177">Raw</text><rect class="bar" x="165" y="168" width="${rateWidth(R)}" height="7"/><text x="48" y="190">Back-off</text><rect class="bar-alt" x="165" y="181" width="${rateWidth(Rt)}" height="7"/><line class="axis" x1="165" y1="191" x2="515" y2="191"/><text x="165" y="207">0.01</text><text x="305" y="207" text-anchor="middle">1</text><text x="445" y="207" text-anchor="middle">100</text><text x="515" y="207" text-anchor="end">1,000 guesses/sec · log scale</text>`);chartTitle('Token entropy and lookup rates','<span><i class="legend-dot alt"></i>Predictable · JO-1001</span><span><i class="legend-dot"></i>Random · 62-character alphabet</span><span>Rate bars use logarithmic scale</span>');metricCards([['Sequential ID entropy',`${fmt(seq,1)} bits`,'Four random decimal digits'],['Random token entropy',`${fmt(H,1)} bits`,`${L} random letters / digits`],['Average guess time',humanTime(time),`Back-off: ${humanTime(limited)} · ${fmt(R/Rt,0)}× slower`]])}
 function reliability(){const mttr=val('repair'),avail=k=>val(k)/(val(k)+mttr),At=avail('terminal'),Aa=avail('api'),Ad=avail('database'),As=val('sms')/100,Af=val('fallback')/100,Acomm=1-(1-As)*(1-Af),series=At*Aa*Ad*Acomm,offline=1-(1-Aa*Ad)*(1-.995),offlineSys=At*offline*Acomm,down=(1-series)*8760,downOffline=(1-offlineSys)*8760;const names=['Intake terminal','Shop API','Parts ledger','SMS or email'],values=[At,Aa,Ad,Acomm];let bars=values.map((x,i)=>{let y=66+i*38,w=x*380;return `<text x="48" y="${y+13}">${names[i]}</text><rect class="bar" x="166" y="${y}" width="${w}" height="20"/><text x="${171+w}" y="${y+14}">${pct(x)}</text>`}).join('');svg(`${bars}<line class="axis" x1="166" y1="220" x2="556" y2="220"/><text x="166" y="237">0% available</text><text x="556" y="237" text-anchor="end">100%</text>`);chartTitle('Availability of each link in the workflow','<span><i class="legend-dot"></i>Long-run availability</span>');metricCards([['System availability',pct(series),'Terminal × API × ledger × messaging'],['Expected downtime / year',`${fmt(down,1)} h`,`About ${fmt(down/24,1)} days over a year`],['With offline intake',`${fmt(downOffline,1)} h`,`Illustrative short-outage cache benefit`]])}
-function theme(){const dark=document.body.classList.toggle('dark');localStorage.setItem('qmod-theme',dark?'dark':'light');byId('themeText').textContent=dark?'Light':'Dark';byId('themeIcon').textContent=dark?'☼':'☾';byId('themeToggle').setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode')}
+function syncThemeToggle(){const dark=document.body.classList.contains('dark');if(byId('themeText'))byId('themeText').textContent=dark?'Light':'Dark';byId('themeToggle')?.setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode')}
+function theme(){const dark=document.body.classList.toggle('dark');try{localStorage.setItem('qmod-theme',dark?'dark':'light')}catch{}syncThemeToggle()}
 function initRequestForm(){const form=byId('requestForm');if(!form)return;const params=new URLSearchParams(location.search),service=params.get('service'),select=byId('requestService');if(service&&[...select.options].some(o=>o.value===service||o.text===service))select.value=service;let draft='';form.addEventListener('submit',e=>{e.preventDefault();const data=new FormData(form);draft=[`Service request`, `Name: ${data.get('name')}`,`Preferred reply contact: ${data.get('contact')}`,`Service: ${data.get('service')}`,`Device: ${data.get('device')}`,`Issue: ${data.get('issue')}`].join('\n');let box=byId('requestDraft');if(!box){box=document.createElement('div');box.id='requestDraft';box.className='request-draft';box.tabIndex=0;byId('requestPreview').appendChild(box)}box.textContent=draft;byId('requestPreview').querySelector('.preview-actions').hidden=false;byId('copyStatus').textContent='Draft ready to copy or print.';box.focus()});byId('copyRequest').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(draft)}catch{const t=document.createElement('textarea');t.value=draft;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();document.execCommand('copy');t.remove()}byId('copyStatus').textContent='Request draft copied.'});byId('printRequest').addEventListener('click',()=>window.print())}
 function initScenarioFilters(){const filters=[...document.querySelectorAll('[data-filter]')],cards=[...document.querySelectorAll('.scenario-card[data-category]')];if(!filters.length)return;filters.forEach(button=>button.addEventListener('click',()=>{const filter=button.dataset.filter;filters.forEach(item=>{const active=item===button;item.classList.toggle('active',active);item.setAttribute('aria-pressed',String(active))});cards.forEach(card=>card.hidden=filter!=='all'&&card.dataset.category!==filter)}))}
 function initConceptPlayground(){const arrivals=byId('conceptArrivals'),techs=byId('conceptTechs');if(!arrivals||!techs)return;const update=()=>{const a=Number(arrivals.value),c=Number(techs.value),load=a/(c*1.5),value=byId('conceptWorkload');byId('conceptArrivalsValue').textContent=fmt(a,1);byId('conceptTechsValue').textContent=fmt(c,0);value.textContent=pct(load);value.dataset.level=load>=1?'over':load>=.8?'busy':'steady';byId('conceptWorkloadNote').textContent=load>=1?'Incoming work exceeds the assumed repair capacity.':load>=.8?'Capacity is close to demand; random bursts may build a queue.':'Combined technician capacity is above the average arrival rate. Assumes 1.5 repairs per technician each hour.'};arrivals.addEventListener('input',update);techs.addEventListener('input',update);update()}
-const themeButton=byId('themeToggle');if(themeButton)themeButton.addEventListener('click',theme);try{if(localStorage.getItem('qmod-theme')==='dark'){document.body.classList.add('dark');if(byId('themeText'))byId('themeText').textContent='Light';if(byId('themeIcon'))byId('themeIcon').textContent='☼';themeButton?.setAttribute('aria-label','Switch to light mode')}}catch{}if(byId('moduleNav')&&byId('simulation')){const requested=new URLSearchParams(location.search).get('model');if(models.some(m=>m.id===requested))current=requested;nav();render()}initSliderSounds();initScenarioFilters();initConceptPlayground();if(document.body.dataset.page==='requests')initRequestForm();
+const themeButton=byId('themeToggle');if(themeButton)themeButton.addEventListener('click',theme);try{if(localStorage.getItem('qmod-theme')==='dark')document.body.classList.add('dark')}catch{}syncThemeToggle();if(byId('moduleNav')&&byId('simulation')){const requested=new URLSearchParams(location.search).get('model');if(models.some(m=>m.id===requested))current=requested;nav();render()}initSliderSounds();initScenarioFilters();initConceptPlayground();if(document.body.dataset.page==='requests')initRequestForm();
+
+// Homepage greetings: native buttons support touch, Enter, and Space.
+const heroPeople = [...document.querySelectorAll('.hero-person')];
+function closeHeroGreetings(){heroPeople.forEach(person=>person.setAttribute('aria-pressed','false'));heroPeople[0]?.dispatchEvent(new Event('hero-greeting-change'))}
+heroPeople.forEach(person=>{
+ person.addEventListener('click',()=>{const open=person.getAttribute('aria-pressed')!=='true';closeHeroGreetings();person.setAttribute('aria-pressed',String(open));person.dispatchEvent(new Event('hero-greeting-change'))});
+ person.addEventListener('blur',()=>{person.setAttribute('aria-pressed','false');person.dispatchEvent(new Event('hero-greeting-change'))});
+});
+if(heroPeople.length){
+ document.addEventListener('pointerdown',event=>{if(!event.target.closest('.hero-person'))closeHeroGreetings()});
+ document.addEventListener('keydown',event=>{if(event.key==='Escape'){closeHeroGreetings();if(document.activeElement?.matches('.hero-person'))document.activeElement.blur()}});
+}
+
+// Match pointer targets to opaque PNG pixels, in the same order as the visual stack.
+// Native buttons remain in the tab order and retain Enter/Space activation.
+const heroTeam = document.querySelector('.hero-team');
+if(heroTeam){
+ const heroPixels = new Map();
+ const heroArt = heroTeam.closest('.welcome-art');
+ const greetingLayer = document.createElement('div');
+ greetingLayer.className = 'hero-greetings';
+ heroArt.appendChild(greetingLayer);
+ const heroBubbles = new Map(heroPeople.map(person=>{
+  const bubble=document.getElementById(person.getAttribute('aria-describedby'));
+  greetingLayer.appendChild(bubble);
+  return [person,bubble];
+ }));
+ // Keep bubbles above every portrait without changing the portraits' stacking or geometry.
+ const updateHeroGreeting = () => {
+  const selected=heroPeople.find(p=>p.classList.contains('is-hovered')) || heroPeople.find(p=>p.matches(':focus-visible')) || heroPeople.find(p=>p.getAttribute('aria-pressed')==='true');
+  heroBubbles.forEach((bubble,person)=>{
+   bubble.classList.toggle('is-visible',person===selected);
+   if(person!==selected)return;
+   const image=person.querySelector('img'), rect=image.getBoundingClientRect(), artRect=heroArt.getBoundingClientRect(), heroRect=heroArt.closest('.welcome').getBoundingClientRect();
+   const pixels=heroPixels.get(person), scale=pixels?Math.max(rect.width/pixels.width,rect.height/pixels.height):1;
+   const head=pixels?.head;
+   const headX=head?rect.left+(head.x*scale-(pixels.width*scale-rect.width)/2):rect.left+rect.width/2;
+   const headTop=head?rect.top+(head.y*scale-(pixels.height*scale-rect.height)/2):rect.top;
+   const half=bubble.offsetWidth/2;
+   const center=Math.max(heroRect.left+10+half,Math.min(heroRect.right-10-half,headX));
+   bubble.style.setProperty('--greeting-left',`${center-artRect.left}px`);
+   bubble.style.setProperty('--greeting-top',`${Math.max(heroRect.top+10,headTop-10-bubble.offsetHeight)-artRect.top}px`);
+   bubble.style.setProperty('--greeting-arrow',`${Math.max(8,Math.min(bubble.offsetWidth-8,headX-center+half))}px`);
+  });
+ };
+ heroPeople.forEach(person=>person.addEventListener('hero-greeting-change',updateHeroGreeting));
+ window.addEventListener('resize',updateHeroGreeting);
+ const loadHeroPixels = person => {
+  const image = person.querySelector('img');
+  const read = () => {
+   const canvas = document.createElement('canvas');
+   canvas.width = image.naturalWidth; canvas.height = image.naturalHeight;
+   const context = canvas.getContext('2d', {willReadFrequently:true});
+   context.drawImage(image,0,0);
+   const data=context.getImageData(0,0,canvas.width,canvas.height).data;
+   let headY=0;
+   for(let y=0;y<canvas.height;y++){
+    let count=0;
+    for(let x=0;x<canvas.width;x++)if(data[(y*canvas.width+x)*4+3]>128)count++;
+    if(count>canvas.width*.05){headY=y;break}
+   }
+   const row=Math.min(canvas.height-1,headY+Math.round(canvas.height*.12));
+   let min=canvas.width,max=0;
+   for(let x=0;x<canvas.width;x++)if(data[(row*canvas.width+x)*4+3]>128){min=Math.min(min,x);max=Math.max(max,x)}
+   heroPixels.set(person, {width:canvas.width,height:canvas.height,data,head:{x:(min+max)/2,y:headY}});
+   updateHeroGreeting();
+  };
+  if(image.complete && image.naturalWidth)read();else image.addEventListener('load',read,{once:true});
+ };
+ heroPeople.forEach(loadHeroPixels);
+ const heroAtPoint = (x,y) => [...heroPeople].sort((a,b)=>Number(getComputedStyle(b).zIndex)-Number(getComputedStyle(a).zIndex)||heroPeople.indexOf(b)-heroPeople.indexOf(a)).find(person=>{
+  const pixels=heroPixels.get(person), image=person.querySelector('img'), teamRect=heroTeam.getBoundingClientRect();
+  // Use the stationary portrait layout bounds for alpha hit testing.
+  const rect={left:teamRect.left+person.offsetLeft+image.offsetLeft,top:teamRect.top+person.offsetTop+image.offsetTop,width:image.offsetWidth,height:image.offsetHeight};
+  rect.right=rect.left+rect.width;rect.bottom=rect.top+rect.height;
+  if(!pixels || x<rect.left || x>=rect.right || y<rect.top || y>=rect.bottom)return false;
+  // object-fit:cover, centered: account for the transparent side margins cropped by CSS.
+  const scale=Math.max(rect.width/pixels.width,rect.height/pixels.height);
+  const px=Math.floor((x-rect.left+(pixels.width*scale-rect.width)/2)/scale);
+  const py=Math.floor((y-rect.top+(pixels.height*scale-rect.height)/2)/scale);
+  return px>=0 && py>=0 && px<pixels.width && py<pixels.height && pixels.data[(py*pixels.width+px)*4+3]>32;
+ });
+ const highlightHero = person => {heroPeople.forEach(item=>item.classList.toggle('is-hovered',item===person));updateHeroGreeting()};
+ heroPeople.forEach(person=>person.addEventListener('focus',()=>highlightHero(null)));
+ heroTeam.addEventListener('pointermove',event=>{if(event.pointerType!=='touch')highlightHero(heroAtPoint(event.clientX,event.clientY))});
+ heroTeam.addEventListener('pointerleave',()=>highlightHero(null));
+ heroTeam.addEventListener('click',event=>{
+  if(event.target.closest('.hero-person'))return;
+  const person=heroAtPoint(event.clientX,event.clientY);
+  if(person){person.focus({preventScroll:true});person.click()}
+ });
+}

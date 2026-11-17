@@ -1,6 +1,19 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="theme-color" content="#f3f6fc"/><title>Concepts · MNCabrido QMODSIM</title><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/><link rel="stylesheet" href="styles.css"/></head>
-<body><header class="topbar"><a class="brand" href="index.html"><img src="assets/mn-cabrido-logo.png" alt="MNCabrido logo"/><span><strong>MNCabrido</strong><small>QMODSIM simulation lab</small></span></a><nav class="topnav" aria-label="Simulation navigation"><a href="index.html">Scenarios</a><a href="lab.html">Lab</a><a class="active" aria-current="page" href="concepts.html">Concepts</a><a href="guides.html">Guides</a><a href="about.html">About</a></nav><button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch color theme"><span id="themeIcon">☾</span><span id="themeText">Dark</span></button></header>
+<body><header class="topbar">
+    <a class="brand" href="index.html" aria-label="MNCabrido home">
+      <img src="assets/mn-cabrido-logo.png" alt="MNCabrido Repair Services logo" />
+      <span><strong>MNCabrido</strong><small>QMODSIM Simulation Lab</small></span>
+    </a>
+    <nav class="topnav" aria-label="Simulation navigation">
+      <a href="index.html">Scenarios</a>
+      <a href="lab.html">Lab</a>
+      <a class="active" aria-current="page" href="concepts.html">Concepts</a>
+      <a href="guides.html">Guides</a>
+      <a href="about.html">About</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch color theme"><span id="themeIcon" aria-hidden="true"><svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.9 13.1A9 9 0 0 1 10.9 3.1a9 9 0 1 0 10 10Z" /></svg><svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" focusable="false"><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" /></svg></span><span id="themeText">Dark</span></button>
+  </header>
 <main class="site-page"><section class="page-hero compact-hero"><div class="eyebrow">Model notes · Plain-language guide</div><h1>How the models <em>work.</em></h1><p>Each simulation turns a repair-shop question into a mathematical model. Explore its key idea, assumptions, and what the results can—and cannot—tell you.</p></section>
 <section class="concept-playground"><div class="playground-copy"><span class="section-kicker">Try a queue scenario</span><h2>When does the workshop get busy?</h2><p>Compare the rate of incoming devices with the technicians’ combined repair pace. As workload approaches capacity, even small delays can create a longer queue.</p><a class="text-link" href="lab.html?model=queue">Open the full queue simulation ↗</a></div><div class="playground-controls"><label for="conceptArrivals">Devices arriving each hour <output id="conceptArrivalsValue">5</output></label><input id="conceptArrivals" type="range" min="1" max="14" step="0.5" value="5"/><label for="conceptTechs">Technicians on duty <output id="conceptTechsValue">3</output></label><input id="conceptTechs" type="range" min="1" max="8" step="1" value="3"/><div class="concept-result" aria-live="polite"><span>Estimated workload</span><strong id="conceptWorkload">111%</strong><small id="conceptWorkloadNote">Compare arrivals with combined hourly repair capacity.</small></div></div></section>
 <section class="page-section"><div class="scenario-grid concepts-grid">
