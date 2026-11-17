@@ -3,91 +3,50 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#f3f6fc" />
+  <meta name="theme-color" content="#f5f8ff" />
   <title>About · MNCabrido iFix RepairOps</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="about-redesign">
   <header class="topbar">
-    <a class="brand" href="index.html" aria-label="MNCabrido home">
-      <img src="assets/mn-cabrido-logo.png" alt="MNCabrido Repair Services logo" />
-      <span><strong>MNCabrido</strong><small>QMODSIM Simulation Lab</small></span>
-    </a>
-    <nav class="topnav" aria-label="Simulation navigation">
-      <a href="index.html">Scenarios</a>
-      <a href="lab.html">Lab</a>
-      <a href="concepts.html">Concepts</a>
-      <a href="guides.html">Guides</a>
-      <a class="active" aria-current="page" href="about.html">About</a>
-    </nav>
-    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch color theme"><span id="themeIcon" aria-hidden="true"><svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.9 13.1A9 9 0 0 1 10.9 3.1a9 9 0 1 0 10 10Z" /></svg><svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" focusable="false"><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" /></svg></span><span id="themeText">Dark</span></button>
+    <a class="brand" href="index.html" aria-label="MNCabrido home"><img src="assets/mn-cabrido-logo.png" alt="MNCabrido Repair Services logo" /><span><strong>MNCabrido</strong><small>QMODSIM Simulation Lab</small></span></a>
+    <nav class="topnav" aria-label="Simulation navigation"><a href="index.html">Scenarios</a><a href="lab.html">Lab</a><a href="concepts.html">Concepts</a><a href="guides.html">Guides</a><a class="active" aria-current="page" href="about.html">About</a></nav>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch color theme"><span id="themeIcon" aria-hidden="true"><svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.9 13.1A9 9 0 0 1 10.9 3.1a9 9 0 1 0 10 10Z" /></svg><svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42-1.42" /></svg></span><span id="themeText">Dark</span></button>
   </header>
-  <main class="site-page">
-    <section class="page-hero compact-hero about-hero">
-      <div class="eyebrow">Project-Based Learning Project</div>
-      <h1>MNCabrido iFix<br /><em>RepairOps</em></h1>
-      <p>Web-Based Repair Service Management and Monitoring System. A proposed system shaped around the shop’s current workflow and records.</p>
-    </section>
-
-    <section class="company-profile" aria-labelledby="companyTitle">
-      <article class="company-story">
-        <span class="section-kicker">The business</span>
-        <h2 id="companyTitle">About MNCabrido</h2>
-        <p>MNCabrido is a local repair business in Barangay West Rembo, Taguig City. It provides repair and troubleshooting services for laptops, desktops, and printers.</p>
-        <p>The owner oversees most operations, including the repair process and the records needed to manage the business.</p>
-      </article>
-      <aside class="company-facts" aria-label="Business details">
-        <div><span>Location</span><strong>Barangay West Rembo, Taguig City</strong></div>
-        <div><span>Devices</span><strong>Laptops · Desktops · Printers</strong></div>
-        <div><span>Current records</span><strong>Job order forms · Paper · Excel</strong></div>
-      </aside>
-    </section>
-
-    <section class="company-operations" aria-labelledby="projectNeedTitle">
-      <div class="section-heading">
-        <span class="section-kicker">Why RepairOps is proposed</span>
-        <h2 id="projectNeedTitle">Bring repair records and progress into one view.</h2>
-        <p class="section-intro">Customer, device, repair, and transaction details currently span paper records and a self-developed Excel dashboard. The proposed web system aims to make those records easier to organize and repair progress easier to monitor.</p>
+  <main class="site-page about-page">
+    <section class="about-hero" aria-labelledby="aboutHeroTitle">
+      <div class="about-hero-copy"><span class="eyebrow">Project-Based Learning Project</span><h1 id="aboutHeroTitle">MNCabrido iFix7<br /><em>RepairOps</em></h1><p class="about-tagline">Repair operations, made easier to understand.</p><p class="about-summary">A proposed web-based repair management and monitoring system that simulates the operations of MNCabrido iFix, a local computer and printer repair shop.</p></div>
+      <div class="repair-illustration" role="img" aria-label="Isometric illustration of a laptop, desktop, printer, and job order clipboard">
+        <svg viewBox="0 0 600 330" aria-hidden="true" focusable="false">
+          <ellipse cx="313" cy="289" rx="264" ry="25" fill="#c8dafa" opacity=".48"/>
+          <path d="M336 77 466 41l102 27-131 39z" fill="#a9c9f7"/><path d="m437 107 131-39v133l-131 42z" fill="#526c91"/><path d="m449 110 107-31v111l-107 34z" fill="#273e61"/><path d="m456 115 93-27v95l-93 30z" fill="#68aff4"/><path d="m456 115 93-27v13l-93 27z" fill="#9bd2ff"/><path d="m430 210 144-45 4 10-139 49z" fill="#b3c8e7"/><path d="m437 223 132-42 18 11-133 44z" fill="#dce8fa"/>
+          <path d="m76 153 145-43 113 30-144 45z" fill="#afcdf5"/><path d="m190 185 144-45v100l-144 45z" fill="#31517e"/><path d="m200 188 124-39v81l-124 39z" fill="#377fd1"/><path d="m200 188 124-39v8l-124 39z" fill="#74b7fb"/><path d="M156 118q-3-4 3-6l92-27q5-1 8 2l70 84-143 43z" fill="#364e70"/><path d="m168 116 82-24 63 75-81 25z" fill="#2474ce"/><path d="m181 120 61-18 47 55-60 18z" fill="#64aafa"/><path d="m252 103-10 12 16-4 5-7z" fill="#f7fbff"/><path d="m252 112-10 10 15-3 6-7z" fill="#f7fbff"/><path d="m265 108-8 12 14-4 5-8z" fill="#f7fbff"/><path d="m226 178 23-7 9 10-24 7z" fill="#a8d1ff"/>
+          <path d="m302 215 107-33 84 24-108 35z" fill="#6683aa"/><path d="m409 241 84-35v40l-84 35z" fill="#3c5679"/><path d="m302 215 107 26v40l-107-29z" fill="#d8e5f8"/><path d="m311 221 92 23v27l-92-24z" fill="#fff"/><path d="m331 221 69-22 55 16-70 24z" fill="#f7faff"/><path d="m385 239 70-24v53l-70 24z" fill="#d7e5f9"/><path d="m397 243 47-16v34l-47 16z" fill="#edf4ff"/><path d="M414 251h16v4h-16zm0 9h23v3h-23z" fill="#8ca8ce"/><path d="m366 224 22-7 18 5-23 8z" fill="#377ad6"/><path d="m373 277 19-6 49 14-20 7z" fill="#adc5e7"/>
+          <path d="m139 228 87-26 51 14-87 28z" fill="#fff" stroke="#ccd9eb" stroke-width="2"/><path d="m190 244 87-28v62l-87 28z" fill="#ebf3ff" stroke="#c1d1e8" stroke-width="2"/><path d="m139 228 51 16v62l-51-17z" fill="#d4e3fa"/><path d="m151 239 28 9v3l-28-9zm0 8 28 9v3l-28-9zm0 8 22 7v3l-22-7z" fill="#8da8ce"/><path d="m201 253 61-19" stroke="#5085ce" stroke-width="3"/><path d="m201 263 61-19m-61 29 43-13" stroke="#a2b9db" stroke-width="3"/><circle cx="219" cy="273" r="5" fill="#f6a664"/>
+          <circle cx="93" cy="250" r="17" fill="#c8e8d8"/><path d="M92 254c-19-18-22-31-10-40 13 9 15 21 10 40zm3-2c2-23 12-35 26-32 2 16-8 26-26 32zm-2 9c-20-8-27-19-20-31 15 3 22 14 20 31z" fill="#78b998"/><path d="M92 250v38" stroke="#698d7e" stroke-width="3"/>
+        </svg>
       </div>
-      <div class="project-scope">
-        <article class="info-card"><span class="card-index">01 · Records</span><h3>Centralized job history</h3><p>Keep customer, device, job order, diagnosis, repair notes, and status history connected in one record.</p></article>
-        <article class="info-card"><span class="card-index">02 · Workflow</span><h3>Clear repair progress</h3><p>Track intake, diagnosis, quotation, approval, repair, and release—including jobs that need longer troubleshooting.</p></article>
-        <article class="info-card"><span class="card-index">03 · Shop operations</span><h3>Parts and payments</h3><p>Record parts needed for each job, supplier and order status, plus charges, downpayments, balances, and payment status.</p></article>
-        <article class="info-card"><span class="card-index">04 · Monitoring</span><h3>Dashboards and updates</h3><p>Give the owner repair and financial summaries, with planned customer status notifications when a device is ready for release.</p></article>
-      </div>
-      <p class="owner-note"><strong>Scope note.</strong> Parts are recorded per repair job; the proposal does not describe a general inventory system. Email is the initial notification channel, with SMS dependent on an available service.</p>
+      <div class="business-strip"><div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span>Barangay West Rembo, Taguig City</span></div><div><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg><span>Laptops · Desktops · Printers</span></div><div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8m-8 4h8"/></svg><span>Paper + Excel</span></div></div>
     </section>
-
-    <section class="company-operations" aria-labelledby="workflowTitle">
-      <div class="section-heading">
-        <span class="section-kicker">Proposed repair workflow</span>
-        <h2 id="workflowTitle">From device intake to release.</h2>
-      </div>
-      <ol class="repair-steps">
-        <li><span>01</span><strong>Intake &amp; job order</strong></li>
-        <li><span>02</span><strong>Diagnosis</strong></li>
-        <li><span>03</span><strong>Quotation &amp; approval</strong></li>
-        <li><span>04</span><strong>Repair &amp; parts</strong></li>
-        <li><span>05</span><strong>Payment</strong></li>
-        <li><span>06</span><strong>Release &amp; update</strong></li>
-      </ol>
-    </section>
-
-    <section class="company-operations" aria-labelledby="usersTitle">
-      <div class="section-heading">
-        <span class="section-kicker">Who the proposed system serves</span>
-        <h2 id="usersTitle">Shop staff manage the records; customers receive updates.</h2>
-      </div>
-      <div class="project-users">
-        <article class="info-card"><span class="card-index">Owner / Administrator</span><h3>Oversees the business</h3><p>Manages customers, job orders, staff assignments, payments, expenses, reports, and other shop records.</p></article>
-        <article class="info-card"><span class="card-index">Technician</span><h3>Records repair work</h3><p>Views assigned jobs and records diagnosis, repair notes, parts needed, and repair status.</p></article>
-        <article class="info-card"><span class="card-index">Customer</span><h3>Receives important updates</h3><p>No account or online booking is required. Staff record customer details at the shop; notifications can share key repair updates.</p></article>
-      </div>
-    </section>
-
+    <section class="about-pair" aria-label="About the business and project"><article class="about-business"><div><h2>About MNCabrido</h2><p>MNCabrido is a local repair business in Barangay West Rembo, Taguig City. It provides repair and troubleshooting services for laptops, desktops, and printers, with the owner overseeing daily operations and repair records.</p></div><div class="store-art" role="img" aria-label="Illustrated MNCabrido iFix storefront"><svg viewBox="0 0 250 148" aria-hidden="true"><path d="m18 56 108-43 108 43v79H18z" fill="#dceaff"/><path d="m28 60 98-38 98 38v13H28z" fill="#3678cc"/><path d="M38 73h174v58H38z" fill="#f8fbff"/><path d="M48 82h154v7H48z" fill="#dce9fb"/><path d="M48 92h74v39H48z" fill="#9bc5f4"/><path d="M132 92h62v39h-62z" fill="#d5e4f8"/><path d="M55 98h60v27H55z" fill="#3d6a9e"/><path d="M140 98h46v27h-46z" fill="#fff"/><path d="M145 104h36v20h-36z" fill="#6ca3e4"/><path d="M82 52h86v16H82z" rx="4" fill="#fff"/><text x="125" y="64" text-anchor="middle" fill="#24436e" font-size="12" font-weight="800" font-family="sans-serif">MNCabrido iFix</text><path d="M15 134h220" stroke="#9bb5d7" stroke-width="3"/><circle cx="27" cy="118" r="12" fill="#b8ddc6"/><path d="M27 119c-13-12-11-21-3-22 6 6 6 13 3 22zm2-1c2-13 9-17 15-13-1 9-7 13-15 13z" fill="#73aa88"/></svg></div></article><article class="why-card"><h2>Why RepairOps?</h2><p>It brings repair records and progress into one system, making shop operations more organized, easier to track, and more reliable than using paper forms and Excel.</p><div class="why-metrics"><span><b>01</b> Connected records</span><span><b>02</b> Clear repair status</span></div></article></section>
+    <section class="before-after" aria-label="From paper and Excel to centralized records"><article class="compare-card before"><span class="compare-badge">BEFORE</span><div class="compare-art" aria-hidden="true"><svg viewBox="0 0 100 70"><path d="M16 9h39v49H16z" fill="#fff" stroke="#8296b5" stroke-width="3"/><path d="M25 20h22m-22 8h22m-22 8h22m-22 8h15" stroke="#92a4bf" stroke-width="3"/><path d="M28 14h39v47H28z" fill="#f7faff" stroke="#5076ab" stroke-width="3"/><rect x="59" y="29" width="32" height="32" rx="5" fill="#128657"/><path d="M66 36h18M66 43h18M66 50h18M73 34v22" stroke="#dff7e9" stroke-width="2"/></svg></div><div><h3>Paper + Excel</h3><p>Separate records, manual updates, and harder to track.</p></div></article><span class="compare-arrow" aria-hidden="true">⟶</span><article class="compare-card after"><span class="compare-badge">AFTER</span><div class="compare-art" aria-hidden="true"><svg viewBox="0 0 100 70"><path d="m12 17 38-9 38 9v36l-38 9-38-9z" fill="#d6eaff"/><path d="m17 20 33-8 33 8v29l-33 8-33-8z" fill="#fff"/><rect x="30" y="22" width="40" height="26" rx="3" fill="#4b91e8"/><path d="m42 35 6 6 12-13" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="m24 57 26 6 26-6" fill="none" stroke="#7099c9" stroke-width="3"/></svg></div><div><h3>Centralized records</h3><p>All repair, payment, and status information in one system.</p></div></article></section>
+    <section class="about-section" aria-labelledby="workflowTitle"><div class="about-section-heading"><h2 id="workflowTitle">Repair Workflow</h2><p>The complete flow of a repair job, from device intake to release.</p></div><ol class="workflow-list">
+      <li><span class="workflow-icon"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="18" rx="2"/><path d="M9 4.5h6v3H9zM8 12h8m-8 4h8"/></svg></span><strong>Intake</strong><p>Register customer and device.</p></li><li class="workflow-arrow" aria-hidden="true">→</li>
+      <li><span class="workflow-icon"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7"/><path d="m16 16 5 5"/></svg></span><strong>Diagnosis</strong><p>Check the device and record findings.</p></li><li class="workflow-arrow" aria-hidden="true">→</li>
+      <li><span class="workflow-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8m-8 4h8"/></svg></span><strong>Quotation</strong><p>Prepare cost and wait for approval.</p></li><li class="workflow-arrow" aria-hidden="true">→</li>
+      <li><span class="workflow-icon"><svg viewBox="0 0 24 24"><path d="m14.7 6.3 3 3M3 21l3.5-.7L19 7.8a2.1 2.1 0 0 0-3-3L3.7 18zM9 4l1-2 1 2 2 1-2 1-1 2-1-2-2-1zm9 11 1-2 1 2 2 1-2 1-1 2-1-2-2-1z"/></svg></span><strong>Repair</strong><p>Repair, test, and update status.</p><details><summary>Parts &amp; testing</summary><p>Source parts when needed, record them per job, and test the device before release.</p></details></li><li class="workflow-arrow" aria-hidden="true">→</li>
+      <li><span class="workflow-icon"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20m-15 5h4"/></svg></span><strong>Payment</strong><p>Record payments and balance.</p></li><li class="workflow-arrow" aria-hidden="true">→</li>
+      <li><span class="workflow-icon"><svg viewBox="0 0 24 24"><path d="m21 8-9-5-9 5v8l9 5 9-5z"/><path d="m3.3 8 8.7 5 8.7-5M12 13v8"/></svg></span><strong>Release</strong><p>Mark ready and release to customer.</p><details><summary>Customer approval</summary><p>Quotation approval is recorded before repair proceeds. Ready-for-release updates can be sent by email, with SMS optional.</p></details></li>
+    </ol></section>
+    <section class="about-section roles-section" aria-labelledby="usersTitle"><div class="about-section-heading"><h2 id="usersTitle">System Users and Roles</h2><p>The system is used only by the shop’s staff for internal management.</p></div><div class="role-grid">
+      <article class="role-card"><div class="role-portrait owner-portrait" aria-hidden="true"><svg viewBox="0 0 120 110"><path d="M16 104q4-30 39-30t40 30" fill="#2857a6"/><path d="m40 79 15 13 15-13 8 25H32z" fill="#dfeaff"/><path d="M38 38q0-23 20-23t21 24v12H38z" fill="#283c62"/><ellipse cx="58" cy="47" rx="19" ry="23" fill="#edbd97"/><path d="M39 43q0-28 22-28 19 1 21 21l-9-7-12-4-10 8-12 2z" fill="#263655"/><path d="M47 48h5m13 0h5" stroke="#263655" stroke-width="3" stroke-linecap="round"/><path d="M54 59q5 5 10 0" fill="none" stroke="#b26a63" stroke-width="2"/><rect x="67" y="84" width="32" height="17" rx="3" fill="#bcd8f9"/><path d="M72 89h22" stroke="#4c78b1" stroke-width="2"/></svg></div><div><h3>Owner</h3><p>Manages overall operations, users, records, payments, expenses, and reports.</p></div></article>
+      <article class="role-card"><div class="role-portrait tech-portrait" aria-hidden="true"><svg viewBox="0 0 120 110"><path d="M13 105q3-31 42-31t43 31" fill="#3678cd"/><path d="M39 80 55 94l15-14 9 25H31z" fill="#d9eaff"/><ellipse cx="57" cy="48" rx="19" ry="22" fill="#e6b08b"/><path d="M37 44q1-28 21-28 20 0 21 28l-8-5-13-9-15 10z" fill="#263f66"/><path d="M35 42h45q-2-24-23-26-19 2-22 26z" fill="#327ad0"/><path d="M39 36h38" stroke="#78b3f5" stroke-width="5"/><path d="M50 49h4m12 0h4" stroke="#273e61" stroke-width="3" stroke-linecap="round"/><path d="m87 77 14 14m-4-19 9 9-20 20-9-9z" fill="#d8e7fa" stroke="#3c6499" stroke-width="3"/></svg></div><div><h3>Technician</h3><p>Handles diagnosis, repair updates, parts required, and repair status.</p></div></article>
+      <article class="role-card"><div class="role-portrait customer-portrait" aria-hidden="true"><svg viewBox="0 0 120 110"><path d="M13 105q5-31 43-31t44 31" fill="#8eb8ee"/><path d="M40 78 57 94l14-16 9 27H31z" fill="#eff6ff"/><ellipse cx="57" cy="48" rx="18" ry="22" fill="#efbd9b"/><path d="M39 43q0-24 19-25 21 0 21 27l-7-8-15-5-15 11z" fill="#473752"/><path d="M49 48h4m13 0h4" stroke="#352d43" stroke-width="3" stroke-linecap="round"/><rect x="80" y="39" width="26" height="42" rx="6" fill="#285caa"/><rect x="83" y="43" width="20" height="32" rx="3" fill="#eff7ff"/><path d="M87 54q6-7 12 0-6 8-12 0z" fill="#4388df"/><path d="m88 55 3 3 6-7" fill="none" stroke="#fff" stroke-width="1.5"/></svg></div><div><h3>Customer</h3><p>Does not log in or book repairs. Receives ready-for-release email updates, with optional SMS.</p></div></article>
+    </div></section>
+    <aside class="key-notes" aria-label="Key project notes"><h2>Key Notes</h2><div class="key-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m7-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm13 10v-2a4 4 0 0 0-3-3.87m-3-11.13a4 4 0 0 1 0 7.75"/></svg><div><strong>Only staff access</strong><p>The internal system is used only by the owner and technicians.</p></div></div><div class="key-note"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><div><strong>Ready-for-release updates</strong><p>Customers receive an email when their device is ready. SMS is optional.</p></div></div><div class="key-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 8-9-5-9 5v8l9 5 9-5z"/><path d="m3.3 8 8.7 5 8.7-5M12 13v8"/></svg><div><strong>Parts per repair job</strong><p>Parts are tracked per job, not as a full inventory system.</p></div></div></aside>
     <footer><span>MNCabrido iFix RepairOps · QMODSIM learning lab</span><a href="index.html">Explore simulations</a></footer>
   </main>
   <script src="app.js"></script>
