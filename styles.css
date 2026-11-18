@@ -5037,3 +5037,13 @@ main{max-width:1620px;padding:20px clamp(18px,3vw,46px) 26px}
 .dispatch-job{padding:10px 12px}
 .quick-run{padding:11px 15px}
 @media(max-width:760px){body{font-size:16px}main{padding:16px 16px 22px}.topnav a,.theme-toggle{font-size:12px}.welcome-copy>p,.page-hero p,.scenario-card p,.sim-subtitle{font-size:15px}}
+.control-panel{grid-template-columns:repeat(4,minmax(0,1fr))}
+.control-panel.controls-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.control-panel.controls-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.control-panel.controls-1{grid-template-columns:minmax(0,1fr)}
+.control-panel.controls-count-5{grid-template-columns:repeat(6,minmax(0,1fr))}
+.control-panel.controls-count-5 .control{grid-column:span 2}
+.control-panel.controls-count-5 .control:nth-of-type(4){grid-column:2/span 2}
+.control-panel.controls-count-5 .control:nth-of-type(5){grid-column:4/span 2}
+.control-panel.controls-count-6{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:760px){.control-panel:is(.controls-1,.controls-2,.controls-3,.controls-4){grid-template-columns:minmax(0,1fr)}.control-panel.controls-count-5,.control-panel.controls-count-6{grid-template-columns:minmax(0,1fr)}.control-panel.controls-count-5 .control:nth-of-type(n){grid-column:1}}
