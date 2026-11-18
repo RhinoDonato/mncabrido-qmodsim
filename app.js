@@ -86,7 +86,7 @@ function initScenarioFilters(){const filters=[...document.querySelectorAll('[dat
 function initQuickRush(){
  const list=byId('dispatchJobs'),timeline=byId('dispatchTimeline'),run=byId('quickRun');
  if(!list||!timeline||!run)return;
- const jobs={screen:{name:'Phone screen',duration:2,due:4},battery:{name:'Tablet battery',duration:1,due:2},laptop:{name:'Laptop board',duration:3,due:5}};
+ const jobs={screen:{name:'Phone screen',duration:2,due:4},battery:{name:'Tablet battery',duration:1,due:2},laptop:{name:'Laptop board',duration:3,due:6}};
  const rows=()=>[...list.querySelectorAll('.dispatch-job')];
  list.addEventListener('click',event=>{
   const button=event.target.closest('[data-move]');if(!button)return;
@@ -100,7 +100,7 @@ function initQuickRush(){
  run.addEventListener('click',()=>{
   let time=0,lateJobs=0,totalLate=0;
   const result=rows().map(row=>{const job=jobs[row.dataset.job];time+=job.duration;const late=Math.max(0,time-job.due);if(late>0){lateJobs++;totalLate+=late}return{...job,finish:time,late}});
-  timeline.innerHTML=result.map(job=>`<div class="dispatch-outcome ${job.late?'is-late':'is-on-time'}"><span class="outcome-time">${job.finish}h</span><span class="outcome-info"><strong>${job.name}</strong><small>${job.late?`${job.late}h past pickup promise`:'Ready before pickup promise'}</small></span><span class="outcome-mark">${job.late?'Late':'On time'}</span></div>`).join('');
+  timeline.innerHTML=result.map(job=>`<div class="dispatch-outcome ${job.late?'is-late':'is-on-time'}"><span class="outcome-time">${job.finish}h</span><span class="outcome-info"><strong>${job.name}</strong><small>${job.late?`${job.late}h past pickup promise`:'Ready by pickup promise'}</small></span><span class="outcome-mark">${job.late?'Late':'On time'}</span></div>`).join('');
   const onTime=result.length-lateJobs;byId('dispatchScore').textContent=`${onTime} / ${result.length}`;
   byId('quickExpected').textContent=lateJobs===0?'Perfect shift: every repair is ready by its promised pickup.':`${lateJobs} pickup${lateJobs===1?' is':'s are'} late by ${totalLate} total hour${totalLate===1?'':'s'}. Try reordering the jobs to improve the result.`;
   byId('quickSample').textContent=onTime===result.length?'Excellent dispatch!':'Try another job order.';
