@@ -83,6 +83,30 @@ function syncThemeToggle(){const dark=document.body.classList.contains('dark');i
 function theme(){const dark=document.body.classList.toggle('dark');try{localStorage.setItem('qmod-theme',dark?'dark':'light')}catch{}syncThemeToggle()}
 function initRequestForm(){const form=byId('requestForm');if(!form)return;const params=new URLSearchParams(location.search),service=params.get('service'),select=byId('requestService');if(service&&[...select.options].some(o=>o.value===service||o.text===service))select.value=service;let draft='';form.addEventListener('submit',e=>{e.preventDefault();const data=new FormData(form);draft=[`Service request`, `Name: ${data.get('name')}`,`Preferred reply contact: ${data.get('contact')}`,`Service: ${data.get('service')}`,`Device: ${data.get('device')}`,`Issue: ${data.get('issue')}`].join('\n');let box=byId('requestDraft');if(!box){box=document.createElement('div');box.id='requestDraft';box.className='request-draft';box.tabIndex=0;byId('requestPreview').appendChild(box)}box.textContent=draft;byId('requestPreview').querySelector('.preview-actions').hidden=false;byId('copyStatus').textContent='Draft ready to copy or print.';box.focus()});byId('copyRequest').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(draft)}catch{const t=document.createElement('textarea');t.value=draft;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();document.execCommand('copy');t.remove()}byId('copyStatus').textContent='Request draft copied.'});byId('printRequest').addEventListener('click',()=>window.print())}
 function initScenarioFilters(){const filters=[...document.querySelectorAll('[data-filter]')],cards=[...document.querySelectorAll('.scenario-card[data-category]')];if(!filters.length)return;filters.forEach(button=>button.addEventListener('click',()=>{const filter=button.dataset.filter;filters.forEach(item=>{const active=item===button;item.classList.toggle('active',active);item.setAttribute('aria-pressed',String(active))});cards.forEach(card=>card.hidden=filter!=='all'&&card.dataset.category!==filter)}))}
+function initQuickRush(){
+ const list=byId('dispatchJobs'),timeline=byId('dispatchTimeline'),run=byId('quickRun');
+ if(!list||!timeline||!run)return;
+ const jobs={screen:{name:'Phone screen',duration:2,due:4},battery:{name:'Tablet battery',duration:1,due:2},laptop:{name:'Laptop board',duration:3,due:5}};
+ const rows=()=>[...list.querySelectorAll('.dispatch-job')];
+ list.addEventListener('click',event=>{
+  const button=event.target.closest('[data-move]');if(!button)return;
+  const row=button.closest('.dispatch-job'),items=rows(),index=items.indexOf(row);
+  if(button.dataset.move==='up'&&index>0)list.insertBefore(row,items[index-1]);
+  if(button.dataset.move==='down'&&index<items.length-1)list.insertBefore(items[index+1],row);
+  rows().forEach((item,i)=>item.querySelector('.job-rank').textContent=String(i+1).padStart(2,'0'));
+  timeline.innerHTML='<p class="dispatch-placeholder">Order changed. Run the shift to see your pickup results.</p>';
+  byId('dispatchScore').textContent='—';byId('quickExpected').textContent='Your next order is ready to try.';byId('quickSample').textContent='Run the shift to reveal the outcome.';
+ });
+ run.addEventListener('click',()=>{
+  let time=0,lateJobs=0,totalLate=0;
+  const result=rows().map(row=>{const job=jobs[row.dataset.job];time+=job.duration;const late=Math.max(0,time-job.due);if(late>0){lateJobs++;totalLate+=late}return{...job,finish:time,late}});
+  timeline.innerHTML=result.map(job=>`<div class="dispatch-outcome ${job.late?'is-late':'is-on-time'}"><span class="outcome-time">${job.finish}h</span><span class="outcome-info"><strong>${job.name}</strong><small>${job.late?`${job.late}h past pickup promise`:'Ready before pickup promise'}</small></span><span class="outcome-mark">${job.late?'Late':'On time'}</span></div>`).join('');
+  const onTime=result.length-lateJobs;byId('dispatchScore').textContent=`${onTime} / ${result.length}`;
+  byId('quickExpected').textContent=lateJobs===0?'Perfect shift: every repair is ready by its promised pickup.':`${lateJobs} pickup${lateJobs===1?' is':'s are'} late by ${totalLate} total hour${totalLate===1?'':'s'}. Try reordering the jobs to improve the result.`;
+  byId('quickSample').textContent=onTime===result.length?'Excellent dispatch!':'Try another job order.';
+ });
+}
+initQuickRush();
 function initConceptPlayground(){const arrivals=byId('conceptArrivals'),techs=byId('conceptTechs');if(!arrivals||!techs)return;const update=()=>{const a=Number(arrivals.value),c=Number(techs.value),load=a/(c*1.5),value=byId('conceptWorkload');byId('conceptArrivalsValue').textContent=fmt(a,1);byId('conceptTechsValue').textContent=fmt(c,0);value.textContent=pct(load);value.dataset.level=load>=1?'over':load>=.8?'busy':'steady';byId('conceptWorkloadNote').textContent=load>=1?'Incoming work exceeds the assumed repair capacity.':load>=.8?'Capacity is close to demand; random bursts may build a queue.':'Combined technician capacity is above the average arrival rate. Assumes 1.5 repairs per technician each hour.'};arrivals.addEventListener('input',update);techs.addEventListener('input',update);update()}
 const themeButton=byId('themeToggle');if(themeButton)themeButton.addEventListener('click',theme);try{if(localStorage.getItem('qmod-theme')==='dark')document.body.classList.add('dark')}catch{}syncThemeToggle();if(byId('moduleNav')&&byId('simulation')){const requested=new URLSearchParams(location.search).get('model');if(models.some(m=>m.id===requested))current=requested;nav();render()}initSliderSounds();initScenarioFilters();initConceptPlayground();if(document.body.dataset.page==='requests')initRequestForm();
 
