@@ -5017,9 +5017,9 @@ body.dark .dispatch-outcome.is-on-time .outcome-mark{background:#214837;color:#8
 /* Shared readability and page-width refinements. */
 body{font-size:17px;line-height:1.6}
 small{font-size:13px}
-main{max-width:1620px;padding:20px clamp(18px,3vw,46px) 26px}
-.site-page,.about-redesign .about-page{max-width:1620px}
-.about-redesign .about-page{padding-inline:clamp(18px,3vw,46px);padding-bottom:24px}
+main,.site-page,.about-redesign .about-page{width:calc(100% - clamp(40px,6vw,100px));max-width:1690px;margin-inline:auto;padding-inline:clamp(16px,2.5vw,38px)}
+main{padding:20px clamp(16px,2.5vw,38px) 26px}
+.about-redesign .about-page{padding-inline:clamp(16px,2.5vw,38px);padding-bottom:24px}
 .topbar{padding-inline:clamp(16px,3vw,48px)}
 .brand small{font-size:12px}
 .topnav a,.theme-toggle,.nav-cta{font-size:14px}
@@ -5036,7 +5036,7 @@ main{max-width:1620px;padding:20px clamp(18px,3vw,46px) 26px}
 .dispatch-jobs{gap:9px}
 .dispatch-job{padding:10px 12px}
 .quick-run{padding:11px 15px}
-@media(max-width:760px){body{font-size:16px}main{padding:16px 16px 22px}.topnav a,.theme-toggle{font-size:12px}.welcome-copy>p,.page-hero p,.scenario-card p,.sim-subtitle{font-size:15px}}
+@media(max-width:760px){body{font-size:16px}main,.site-page,.about-redesign .about-page{width:calc(100% - 32px)}main{padding:16px 0 22px}.site-page{padding:15px 0}.about-redesign .about-page{padding:15px 0 32px}.topnav a,.theme-toggle{font-size:12px}.welcome-copy>p,.page-hero p,.scenario-card p,.sim-subtitle{font-size:15px}}
 .control-panel{grid-template-columns:repeat(4,minmax(0,1fr))}
 .control-panel.controls-3{grid-template-columns:repeat(3,minmax(0,1fr))}
 .control-panel.controls-2{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -5046,4 +5046,19 @@ main{max-width:1620px;padding:20px clamp(18px,3vw,46px) 26px}
 .control-panel.controls-count-5 .control:nth-of-type(4){grid-column:2/span 2}
 .control-panel.controls-count-5 .control:nth-of-type(5){grid-column:4/span 2}
 .control-panel.controls-count-6{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(min-width:761px) and (max-width:1050px){.control-panel.controls-4{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:760px){.control-panel:is(.controls-1,.controls-2,.controls-3,.controls-4){grid-template-columns:minmax(0,1fr)}.control-panel.controls-count-5,.control-panel.controls-count-6{grid-template-columns:minmax(0,1fr)}.control-panel.controls-count-5 .control:nth-of-type(n){grid-column:1}}
+@media(pointer:coarse){.lab-page .control input[type=range]{height:44px;touch-action:pan-y}}
+.legend-dot.danger{background:#e6796d}body.dark .legend-dot.danger{background:#f4a497}
+.topbar .topnav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.topbar .topnav a{width:100%;min-width:0}
+@media(max-width:760px){.topbar .topnav{grid-template-columns:repeat(5,minmax(72px,1fr));overflow-x:auto}.topbar .topnav a{flex:none}}
+@media(min-width:1200px){.hero-team{left:-4px;width:100%}}
+@media(min-width:761px) and (max-width:1199px){.welcome-copy{width:100%;max-width:none;padding-bottom:0}.welcome-copy h1{font-size:clamp(28px,3.6vw,40px)}.welcome .welcome-art{width:100%;max-width:none;margin:0;overflow:hidden;padding:0}.hero-team{left:25%;width:100%}}
+@media(min-width:1200px){.welcome-copy h1{font-size:clamp(34px,3.3vw,46px)}}
+@media(min-width:761px){.welcome-copy{transform:translateX(-12px)}}
+.about-redesign .about-hero-copy .eyebrow{font-size:14px}
+.about-redesign .about-tagline{font-size:18px}
+.about-redesign .about-summary{font-size:16px;line-height:1.65}
+.about-redesign .business-strip span{font-size:15px}
+@media(max-width:760px){.about-redesign .about-hero-copy .eyebrow{font-size:13px}.about-redesign .about-tagline{font-size:16px}.about-redesign .about-summary{font-size:15px}.about-redesign .business-strip span{font-size:14px}}
