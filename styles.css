@@ -27,6 +27,17 @@ html {
   scroll-padding-top: 84px
 }
 
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none
+}
+
+html::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0
+}
+
 body {
   margin: 0;
   background: var(--paper);
@@ -4994,3 +5005,35 @@ body.dark.about-redesign .why-metrics b{background:var(--blue-3);color:var(--blu
 @media(max-width:420px){.about-redesign .why-metrics{grid-template-columns:minmax(0,1fr);gap:8px}.about-redesign .why-card{padding:18px}}
 
 @media(min-width:761px) and (max-width:900px){.about-redesign .about-page{padding-inline:16px}}
+.quick-sim{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(310px,.95fr);gap:22px;margin:17px 0 20px;padding:23px 25px;border:1px solid var(--line);border-radius:19px;background:linear-gradient(115deg,var(--card),var(--soft));box-shadow:var(--shadow)}
+.dispatch-challenge+.scenario-section{padding-top:8px}.quick-sim.dispatch-challenge{margin-bottom:8px}
+.quick-sim-controls h2{font:900 clamp(22px,2.6vw,30px)/1.15 var(--font-head);letter-spacing:-.7px;margin:6px 0}.quick-sim-controls>p{max-width:530px;color:var(--muted);font-size:12px;margin:0 0 13px;line-height:1.55}
+.quick-sim-actions{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:12px}.quick-run{border:0;border-radius:9px;background:var(--blue);color:#fff;padding:9px 13px;cursor:pointer;font-size:10px;font-weight:900;transition:filter .18s,transform .18s}.quick-run:hover{filter:brightness(1.1);transform:translateY(-1px)}.quick-sample{color:var(--muted);font-size:10px;font-weight:700}
+.quick-chart-panel{min-width:0;align-self:stretch;padding:14px 15px 12px;border:1px solid var(--line);border-radius:14px;background:var(--card)}.quick-chart-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:10px}.quick-chart-head span{color:var(--muted);font-size:9px;text-align:right}.quick-expected{margin:4px 0 5px;font-size:11px;font-weight:900;color:var(--ink)}.quick-lab-link{color:var(--blue);font-size:10px;font-weight:900;text-decoration:none}.quick-lab-link:hover{text-decoration:underline}
+.dispatch-challenge{align-items:stretch}.dispatch-jobs{display:grid;gap:7px;list-style:none;padding:0;margin:14px 0 0}.dispatch-job{display:flex;align-items:center;gap:10px;min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card)}.job-rank{display:grid;place-items:center;flex:none;width:25px;height:25px;border-radius:8px;background:var(--blue-3);color:var(--blue);font-size:9px;font-weight:900}.job-info{display:grid;gap:1px;flex:1;min-width:0}.job-info strong{font-size:10px;line-height:1.35}.job-info small{color:var(--muted);font-size:9px;line-height:1.35}.job-movers{display:flex;gap:4px}.job-movers button{width:26px;height:26px;padding:0;border:1px solid var(--line);border-radius:7px;background:var(--soft);color:var(--blue);font-size:13px;font-weight:900;cursor:pointer}.job-movers button:hover{background:var(--blue-3)}.dispatch-result{display:flex;flex-direction:column}.dispatch-timeline{display:grid;gap:7px;min-height:129px;align-content:start;margin:12px 0}.dispatch-placeholder{align-self:center;margin:0;padding:25px 10px;text-align:center;color:var(--muted);font-size:11px}.dispatch-outcome{display:grid;grid-template-columns:38px minmax(0,1fr) auto;align-items:center;gap:9px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--soft)}.outcome-time{font:900 12px var(--font-head);color:var(--blue)}.outcome-info{display:grid;min-width:0}.outcome-info strong{font-size:10px}.outcome-info small{font-size:9px;color:var(--muted)}.outcome-mark{padding:4px 7px;border-radius:7px;background:#e2f7ed;color:#147953;font-size:8px;font-weight:900;white-space:nowrap}.dispatch-outcome.is-late .outcome-mark{background:#fff0e9;color:#bd5c35}.dispatch-score{display:flex;justify-content:space-between;align-items:center;padding:10px 0 6px;border-top:1px solid var(--line);font-size:10px;font-weight:800}.dispatch-score strong{color:var(--blue);font:900 18px var(--font-head)}.dispatch-result .quick-expected{min-height:34px;font-size:10px;color:var(--muted)}
+body.dark .dispatch-outcome.is-on-time .outcome-mark{background:#214837;color:#8ee0bd}body.dark .dispatch-outcome.is-late .outcome-mark{background:#503328;color:#ffbd98}
+@media(max-width:760px){.quick-sim{grid-template-columns:minmax(0,1fr);gap:15px;padding:19px}.quick-chart-panel{padding:12px}.dispatch-challenge{grid-template-columns:minmax(0,1fr)}}
+
+/* Shared readability and page-width refinements. */
+body{font-size:17px;line-height:1.6}
+small{font-size:13px}
+main{max-width:1620px;padding:20px clamp(18px,3vw,46px) 26px}
+.site-page,.about-redesign .about-page{max-width:1620px}
+.about-redesign .about-page{padding-inline:clamp(18px,3vw,46px);padding-bottom:24px}
+.topbar{padding-inline:clamp(16px,3vw,48px)}
+.brand small{font-size:12px}
+.topnav a,.theme-toggle,.nav-cta{font-size:14px}
+.eyebrow,.section-kicker,.module-count,.scenario-number,.scenario-link,.scenario-note,.form-note,footer{font-size:12px}
+.welcome-copy>p,.page-hero p{font-size:17px}
+.scenario-card p,.scenario-note,.sim-subtitle,.control-label,.control small,.metric-label,.metric-detail,.explain-card p,.formula-card p,.rail-note p,.module-button small,.form-note{font-size:14px}
+.module-button strong{font-size:14px}
+.quick-sim-controls>p,.job-info small,.outcome-info small,.quick-sample,.quick-chart-head span,.quick-lab-link{font-size:12px}
+.job-info strong,.outcome-info strong,.quick-chart-head,.quick-run,.dispatch-score,.scenario-filters button{font-size:13px}
+.scenario-link{padding-top:8px}
+.lab-page .character-guide .guide-role,.lab-page .character-guide .guide-description,.lab-page .character-guide .guide-tip p,.lab-page .visual-panel .panel-title{font-size:14px}
+.guides-page .guide-team .guide-label{font-size:12px}
+.guides-page .guide-team .team-card p{font-size:14px}
+.dispatch-jobs{gap:9px}
+.dispatch-job{padding:10px 12px}
+.quick-run{padding:11px 15px}
+@media(max-width:760px){body{font-size:16px}main{padding:16px 16px 22px}.topnav a,.theme-toggle{font-size:12px}.welcome-copy>p,.page-hero p,.scenario-card p,.sim-subtitle{font-size:15px}}
