@@ -4720,3 +4720,10 @@ body.dark .lab-page .guide-tip strong{color:#a9c6ff}
  .lab-page .visual-panel{gap:10px}
  .lab-page .visual-panel .panel-top{flex-wrap:wrap;gap:4px 10px}
 }
+
+/* Let scenario sliders fill the whole control row when fewer controls are present. */
+@media(min-width:1051px){
+  .simulation .control-panel{grid-template-columns:repeat(auto-fit,minmax(250px,1fr));column-gap:20px}
+}
+.simulation .control input[type=range]{display:block;width:100%;height:28px;margin:7px 0 1px;accent-color:var(--brand-solid);cursor:pointer}
+.simulation .control input[type=range]:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:8px}
