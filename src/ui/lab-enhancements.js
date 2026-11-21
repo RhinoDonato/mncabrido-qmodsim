@@ -24,13 +24,14 @@ function colors() {
 function contextFor(canvas) {
   const rect = canvas.getBoundingClientRect();
   if (!rect.width) return null;
+  const height = rect.height || 260;
   const ratio = Math.min(2, window.devicePixelRatio || 1);
   canvas.width = Math.round(rect.width * ratio);
-  canvas.height = Math.round(260 * ratio);
+  canvas.height = Math.round(height * ratio);
   const context = canvas.getContext('2d');
   context.setTransform(ratio, 0, 0, ratio, 0, 0);
-  context.clearRect(0, 0, rect.width, 260);
-  return { context, width: rect.width, height: 260 };
+  context.clearRect(0, 0, rect.width, height);
+  return { context, width: rect.width, height };
 }
 
 function drawGrid(context, width, palette) {
@@ -58,41 +59,156 @@ function drawArrival(context, width, params, palette) {
 
 function drawQueue(context, width, params, palette) {
   const result = calculateQueue({ lambda: params.lambda, mu: params.mu, servers: params.techs, capacity: params.capacity });
-  const columns = Math.min(params.capacity, 16);
-  const cellWidth = Math.min(42, (width - 54) / columns);
-  const expected = result.averageInSystem;
-  context.font = '12px Nunito, sans-serif';
-  for (let index = 0; index < params.capacity; index += 1) {
-    const row = Math.floor(index / columns);
-    const column = index % columns;
-    const x = 28 + column * cellWidth;
-    const y = 64 + row * 54;
-    context.fillStyle = index < expected ? palette.blue : palette.pale;
-    context.strokeStyle = index < params.techs ? palette.success : palette.line;
-    context.lineWidth = 2; context.fillRect(x, y, cellWidth - 7, 32); context.strokeRect(x, y, cellWidth - 7, 32);
+  const compact = width < 480;
+  const padding = compact ? 14 : 24;
+  const gap = compact ? 6 : 12;
+  const cardWidth = (width - padding * 2 - gap * 2) / 3;
+  const cardY = 47;
+  const cardHeight = 92;
+  const queuePlaces = Math.max(0, params.capacity - params.techs);
+  const queueRatio = queuePlaces ? Math.min(1, result.averageInQueue / queuePlaces) : 0;
+  const utilization = Math.min(1, result.technicianUtilization);
+  const blocking = Math.min(1, result.blockingProbability);
+  const percent = value => `${(value * 100).toFixed(value < .1 ? 1 : 0)}%`;
+  const roundRect = (x, y, boxWidth, boxHeight, radius = 10) => {
+    const r = Math.min(radius, boxWidth / 2, boxHeight / 2);
+    context.beginPath(); context.moveTo(x + r, y); context.lineTo(x + boxWidth - r, y);
+    context.quadraticCurveTo(x + boxWidth, y, x + boxWidth, y + r); context.lineTo(x + boxWidth, y + boxHeight - r);
+    context.quadraticCurveTo(x + boxWidth, y + boxHeight, x + boxWidth - r, y + boxHeight); context.lineTo(x + r, y + boxHeight);
+    context.quadraticCurveTo(x, y + boxHeight, x, y + boxHeight - r); context.lineTo(x, y + r);
+    context.quadraticCurveTo(x, y, x + r, y); context.closePath();
+  };
+  const cards = [
+    { label: compact ? 'TECHS' : 'ACTIVE TECHNICIANS', value: `${params.techs}`, unit: 'stations', ratio: utilization, color: palette.success },
+    { label: compact ? 'WAITING' : 'AVERAGE QUEUE', value: result.averageInQueue.toFixed(1), unit: 'devices', ratio: queueRatio, color: palette.blue },
+    { label: compact ? 'TURN-AWAY' : 'TURN-AWAY CHANCE', value: percent(blocking), unit: compact ? 'chance' : 'when the shop is full', ratio: blocking, color: palette.danger },
+  ];
+
+  context.fillStyle = palette.ink; context.font = `800 ${compact ? 13 : 15}px Nunito, sans-serif`;
+  context.fillText('Queue capacity at a glance', padding, 27);
+  context.fillStyle = palette.muted; context.font = `700 ${compact ? 9 : 11}px Nunito, sans-serif`; context.textAlign = 'right';
+  context.fillText(`M/M/${params.techs}/${params.capacity}`, width - padding, 27); context.textAlign = 'start';
+
+  cards.forEach((card, index) => {
+    const x = padding + index * (cardWidth + gap);
+    roundRect(x, cardY, cardWidth, cardHeight); context.fillStyle = palette.pale; context.fill();
+    context.strokeStyle = palette.line; context.lineWidth = 1; context.stroke();
+    context.fillStyle = palette.muted; context.font = `800 ${compact ? 8 : 10}px Nunito, sans-serif`;
+    context.fillText(card.label, x + (compact ? 8 : 12), cardY + 19);
+    context.fillStyle = palette.ink; context.font = `800 ${compact ? 20 : 27}px Nunito, sans-serif`;
+    context.fillText(card.value, x + (compact ? 8 : 12), cardY + 52);
+    context.fillStyle = palette.muted; context.font = `700 ${compact ? 9 : 11}px Nunito, sans-serif`;
+    context.fillText(card.unit, x + (compact ? 8 : 12), cardY + 69);
+    const barX = x + (compact ? 8 : 12), barY = cardY + 78, barWidth = cardWidth - (compact ? 16 : 24);
+    roundRect(barX, barY, barWidth, 5, 3); context.fillStyle = palette.background; context.fill();
+    if (card.ratio > 0) { roundRect(barX, barY, Math.max(5, barWidth * card.ratio), 5, 3); context.fillStyle = card.color; context.fill(); }
+  });
+
+  const shelfY = 170;
+  context.fillStyle = palette.ink; context.font = `800 ${compact ? 10 : 12}px Nunito, sans-serif`;
+  context.fillText(queuePlaces ? 'WAITING SHELF' : 'NO WAITING SHELF', padding, shelfY);
+  context.fillStyle = palette.muted; context.font = `700 ${compact ? 9 : 11}px Nunito, sans-serif`; context.textAlign = 'right';
+  context.fillText(queuePlaces ? `${result.averageInQueue.toFixed(1)} of ${queuePlaces} places used` : 'Capacity equals active stations', width - padding, shelfY); context.textAlign = 'start';
+  const shelfTop = 184, shelfHeight = 31, shelfWidth = width - padding * 2;
+  if (queuePlaces) {
+    const slotGap = compact ? 2 : 4;
+    const slotWidth = (shelfWidth - slotGap * (queuePlaces - 1)) / queuePlaces;
+    for (let index = 0; index < queuePlaces; index += 1) {
+      const x = padding + index * (slotWidth + slotGap);
+      roundRect(x, shelfTop, slotWidth, shelfHeight, Math.min(6, slotWidth / 3)); context.fillStyle = palette.background; context.fill();
+      context.strokeStyle = palette.line; context.stroke();
+      const occupied = Math.max(0, Math.min(1, result.averageInQueue - index));
+      if (occupied > 0) {
+        roundRect(x + 2, shelfTop + 2 + (shelfHeight - 4) * (1 - occupied), Math.max(1, slotWidth - 4), (shelfHeight - 4) * occupied, Math.min(4, slotWidth / 4));
+        context.fillStyle = palette.blue; context.fill();
+      }
+    }
+  } else {
+    roundRect(padding, shelfTop, shelfWidth, shelfHeight, 6); context.fillStyle = palette.background; context.fill(); context.strokeStyle = palette.line; context.stroke();
   }
-  context.fillStyle = palette.ink; context.font = '700 14px Nunito, sans-serif';
-  context.fillText(`${params.techs} technician stations · ${result.averageInQueue.toFixed(1)} devices waiting`, 28, 34);
+  context.fillStyle = palette.muted; context.font = `700 ${compact ? 9 : 11}px Nunito, sans-serif`;
+  context.fillText(`${percent(utilization)} technician use`, padding, 240);
+  context.textAlign = 'right'; context.fillText(`${Math.max(0, queuePlaces - result.averageInQueue).toFixed(1)} shelf places available`, width - padding, 240); context.textAlign = 'start';
+  active?.canvas?.setAttribute('aria-label', `${params.techs} active technician stations at ${percent(utilization)} utilization. ${result.averageInQueue.toFixed(1)} devices wait on average across ${queuePlaces} waiting-shelf places. Turn-away chance is ${percent(blocking)}.`);
 }
 
-const MARKOV_POSITIONS = [[.08,.2],[.27,.2],[.46,.2],[.65,.08],[.65,.34],[.82,.34],[.92,.15],[.92,.58],[.65,.72]];
-function drawMarkov(context, width, params, palette, phase = 0) {
+const MARKOV_NODES = [
+  { x: .06, y: .42, label: 'Intake' },
+  { x: .20, y: .42, label: 'Diagnosis' },
+  { x: .34, y: .42, label: 'Quote' },
+  { x: .51, y: .08, label: 'Parts order' },
+  { x: .51, y: .42, label: 'Repair' },
+  { x: .68, y: .42, label: 'Ready' },
+  { x: .87, y: .17, label: 'Released' },
+  { x: .87, y: .70, label: 'Canceled' },
+  { x: .51, y: .82, label: 'Rework' },
+];
+
+const MARKOV_EDGE_LAYOUT = {
+  '0-1': { label: [.13, .36] },
+  '1-2': { label: [.27, .36] },
+  '2-3': { label: [.40, .30] },
+  '2-4': { label: [.425, .36] },
+  '2-7': { control: [.60, .68], label: [.56, .62] },
+  '3-4': { control: [.55, .25], label: [.555, .27] },
+  '3-7': { control: [.94, .03], label: [.74, .08] },
+  '4-5': { label: [.595, .36] },
+  '4-8': { control: [.55, .62], label: [.555, .63] },
+  '5-6': { label: [.78, .25] },
+  '5-7': { label: [.78, .59] },
+  '8-4': { control: [.47, .62], label: [.465, .65] },
+  '8-6': { control: [.98, .91], label: [.78, .88] },
+};
+
+function drawArrow(context, start, end, layout, probability, palette, plot, showLabel = true) {
+  const control = layout.control ? plot(...layout.control) : null;
+  const previous = control || start;
+  const angle = Math.atan2(end[1] - previous[1], end[0] - previous[0]);
+  const tip = [end[0] - Math.cos(angle) * 19, end[1] - Math.sin(angle) * 19];
+  context.strokeStyle = palette.line; context.lineWidth = 1.35;
+  context.beginPath(); context.moveTo(...start);
+  if (control) context.quadraticCurveTo(control[0], control[1], tip[0], tip[1]);
+  else context.lineTo(...tip);
+  context.stroke();
+  context.fillStyle = palette.muted;
+  context.beginPath();
+  context.moveTo(tip[0], tip[1]);
+  context.lineTo(tip[0] - Math.cos(angle - .55) * 6, tip[1] - Math.sin(angle - .55) * 6);
+  context.lineTo(tip[0] - Math.cos(angle + .55) * 6, tip[1] - Math.sin(angle + .55) * 6);
+  context.closePath(); context.fill();
+  if (!showLabel || probability >= 1 || !layout.label) return;
+  const [labelX, labelY] = plot(...layout.label);
+  const text = probability.toFixed(2);
+  context.font = '700 10px Nunito, sans-serif'; context.textAlign = 'center';
+  const labelWidth = context.measureText(text).width + 10;
+  context.fillStyle = palette.background; context.fillRect(labelX - labelWidth / 2, labelY - 9, labelWidth, 16);
+  context.strokeStyle = palette.line; context.strokeRect(labelX - labelWidth / 2, labelY - 9, labelWidth, 16);
+  context.fillStyle = palette.muted; context.fillText(text, labelX, labelY + 2);
+  context.textAlign = 'start';
+}
+
+function drawMarkov(context, width, height, params, palette, phase = 0) {
   const result = calculateMarkov({ approval: params.approval / 100, partsAvailable: params.parts / 100, pickup: params.pickup / 100, deposit: params.deposit / 100 });
-  const positions = MARKOV_POSITIONS.map(([x, y]) => [30 + x * (width - 70), 32 + y * 215]);
+  active?.canvas?.setAttribute('aria-label', 'Nine-state repair lifecycle from intake through diagnosis, quotation, parts ordering, repair, pickup readiness, release, cancellation, or warranty rework. Transition probabilities update with the controls.');
+  const compact = width < 360;
+  const plot = (x, y) => [32 + x * (width - 64), 24 + y * (height - 48)];
+  const positions = MARKOV_NODES.map(node => plot(node.x, node.y));
   result.transitionMatrix.forEach((row, from) => row.forEach((probability, to) => {
     if (!probability || from === to) return;
-    const [x1, y1] = positions[from], [x2, y2] = positions[to];
-    context.strokeStyle = palette.line; context.lineWidth = 1;
-    context.beginPath(); context.moveTo(x1, y1); context.lineTo(x2, y2); context.stroke();
-    if (probability < 1) { context.fillStyle = palette.muted; context.font = '10px Nunito, sans-serif'; context.fillText(probability.toFixed(2), (x1 + x2) / 2, (y1 + y2) / 2 - 3); }
+    drawArrow(context, positions[from], positions[to], MARKOV_EDGE_LAYOUT[`${from}-${to}`] || {}, probability, palette, plot, !compact);
   }));
   positions.forEach(([x, y], index) => {
     const absorbing = index === 6 || index === 7;
     const pulse = index === Math.floor(phase) % 9 ? 3 : 0;
     context.beginPath(); context.arc(x, y, 14 + pulse, 0, Math.PI * 2);
     context.fillStyle = absorbing ? (index === 6 ? palette.success : palette.danger) : palette.blue; context.fill();
-    context.fillStyle = palette.ink; context.font = '700 10px Nunito, sans-serif'; context.textAlign = 'center';
-    context.fillText(`S${index}`, x, y + 29); context.textAlign = 'start';
+    context.fillStyle = palette.background; context.font = '800 10px Nunito, sans-serif'; context.textAlign = 'center';
+    context.fillText(`S${index}`, x, y + 3);
+    if (!compact) {
+      context.fillStyle = palette.ink; context.font = '700 10px Nunito, sans-serif';
+      context.fillText(MARKOV_NODES[index].label, x, y + 31);
+    }
+    context.textAlign = 'start';
   });
 }
 
@@ -141,12 +257,12 @@ function draw(phase = 0) {
   if (!active?.canvas?.isConnected) return;
   const surface = contextFor(active.canvas);
   if (!surface) return;
-  const { context, width } = surface;
+  const { context, width, height } = surface;
   const palette = colors();
-  context.fillStyle = palette.background; context.fillRect(0, 0, width, 260);
+  context.fillStyle = palette.background; context.fillRect(0, 0, width, height);
   if (active.model === 'arrival') drawArrival(context, width, active.params, palette);
   else if (active.model === 'queue') drawQueue(context, width, active.params, palette);
-  else if (active.model === 'markov') drawMarkov(context, width, active.params, palette, phase);
+  else if (active.model === 'markov') drawMarkov(context, width, height, active.params, palette, phase);
   else drawGeneric(context, width, active.model, active.params, palette);
 }
 
@@ -160,7 +276,7 @@ export function initLabEnhancements(simulation) {
   if (!visual || visual.querySelector('.canvas-enhancement')) return;
   const section = document.createElement('details');
   section.className = 'canvas-enhancement'; section.open = true;
-  section.innerHTML = '<summary>Optional live Canvas view</summary><canvas class="live-canvas" height="260" role="img" aria-label="Synchronized Canvas visualization of the selected mathematical model"></canvas><p class="canvas-description">A synchronized visual alternative; exact values remain available in the metric cards and SVG chart.</p>';
+  section.innerHTML = `<summary>Optional live Canvas view</summary><canvas class="live-canvas" height="260" role="img" aria-label="Synchronized Canvas visualization of the selected mathematical model"></canvas><p class="canvas-description">A synchronized visual alternative; exact values remain available in the metric cards and SVG chart.</p><ul class="markov-state-key" aria-label="Repair lifecycle state key" hidden>${MARKOV_STATES.map((state, index) => `<li><strong>S${index}</strong><span>${state.replace(/^S\d+\s*/, '')}</span></li>`).join('')}</ul>`;
   visual.appendChild(section);
   const matrix = document.createElement('details'); matrix.className = 'markov-matrix'; matrix.hidden = true;
   matrix.innerHTML = `<summary>Nine-state transition matrix</summary><div class="matrix-scroll"><table><caption>Rows are source states; columns are destination states. S6 and S7 are absorbing.</caption><thead><tr><th>From</th>${MARKOV_STATES.map((_, index) => `<th>S${index}</th>`).join('')}<th>Σ</th></tr></thead><tbody></tbody></table></div>`;
@@ -173,6 +289,10 @@ export function initLabEnhancements(simulation) {
 export function updateLabEnhancements(model, params) {
   const canvas = document.querySelector('.live-canvas');
   if (!canvas) return;
+  canvas.classList.toggle('markov-canvas', model === 'markov');
+  canvas.classList.toggle('queue-canvas', model === 'queue');
+  const stateKey = canvas.closest('.canvas-enhancement')?.querySelector('.markov-state-key');
+  if (stateKey) stateKey.hidden = model !== 'markov';
   cancelAnimationFrame(animationFrame); animationFrame = 0;
   active = { canvas, model, params };
   updateMatrix(model, params);

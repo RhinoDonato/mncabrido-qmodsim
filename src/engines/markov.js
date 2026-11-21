@@ -54,16 +54,20 @@ export function calculateMarkov(params) {
   const q = TRANSIENT_STATES.map(from => TRANSIENT_STATES.map(to => transitionMatrix[from][to]));
   const r = TRANSIENT_STATES.map(from => ABSORBING_STATES.map(to => transitionMatrix[from][to]));
   const identityMinusQ = q.map((row, index) => row.map((value, column) => (index === column ? 1 : 0) - value));
-  const expectedSteps = solve(identityMinusQ, Array(q.length).fill(1));
-  const absorptionByOutcome = ABSORBING_STATES.map((_, outcome) => solve(identityMinusQ, r.map(row => row[outcome])));
+  const inverseColumns = Array.from({ length: q.length }, (_, column) => solve(identityMinusQ, Array.from({ length: q.length }, (_, row) => Number(row === column))));
+  const fundamentalMatrix = Array.from({ length: q.length }, (_, row) => inverseColumns.map(column => column[row]));
+  const expectedSteps = fundamentalMatrix.map(row => row.reduce((sum, value) => sum + value, 0));
+  const absorptionMatrix = fundamentalMatrix.map(row => ABSORBING_STATES.map((_, outcome) => row.reduce((sum, value, column) => sum + value * r[column][outcome], 0)));
   return {
     transitionMatrix,
     q,
     r,
+    fundamentalMatrix,
+    absorptionMatrix,
     expectedSteps,
     expectedStepsFromIntake: expectedSteps[0],
-    paidProbability: absorptionByOutcome[0][0],
-    canceledProbability: absorptionByOutcome[1][0],
+    paidProbability: absorptionMatrix[0][0],
+    canceledProbability: absorptionMatrix[0][1],
     rowChecks,
   };
 }

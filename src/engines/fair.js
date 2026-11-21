@@ -67,7 +67,11 @@ export function simulateFair(params) {
   let total = 0;
   for (let trial = 0; trial < params.trials; trial += 1) {
     const frequency = sampleBetaPert(params.low, params.mode, params.high, random);
-    const vulnerability = beta(alpha, betaShape, random);
+    const vulnerability = params.vulnerability === 0
+      ? 0
+      : params.vulnerability === 1
+        ? 1
+        : beta(alpha, betaShape, random);
     const eventCount = poisson(frequency * vulnerability, random);
     let annualLoss = 0;
     for (let event = 0; event < eventCount; event += 1) annualLoss += Math.exp(Math.log(params.medianLoss) + params.sigma * normal(random));
@@ -91,4 +95,33 @@ export function histogram(losses, binCount = 18, capPercentile = 0.995) {
   const bins = Array(binCount).fill(0);
   for (const loss of losses) bins[Math.min(binCount - 1, Math.floor(loss / maximum * binCount))] += 1;
   return { bins, maximum, largestBin: Math.max(...bins) };
+}
+
+export function lossExceedanceCurve(losses, pointCount = 21, capPercentile = 0.995) {
+  if (!losses?.length) throw new RangeError('Annual loss samples are required for an exceedance curve.');
+  assertFiniteNumber(pointCount, 'LEC point count', { min: 2, integer: true });
+  assertProbability(capPercentile, 'LEC cap percentile');
+  const sorted = Array.from(losses);
+  sorted.forEach(loss => assertFiniteNumber(loss, 'annual loss', { min: 0 }));
+  sorted.sort((a, b) => a - b);
+  const maximum = sorted[Math.min(sorted.length - 1, Math.floor(capPercentile * (sorted.length - 1)))] || 1;
+  const exceedanceAt = threshold => {
+    let low = 0;
+    let high = sorted.length;
+    while (low < high) {
+      const middle = Math.floor((low + high) / 2);
+      if (sorted[middle] <= threshold) low = middle + 1;
+      else high = middle;
+    }
+    return (sorted.length - low) / sorted.length;
+  };
+  const points = Array.from({ length: pointCount }, (_, index) => {
+    const threshold = maximum * index / (pointCount - 1);
+    return { threshold, exceedanceProbability: exceedanceAt(threshold) };
+  });
+  const references = [0.5, 0.75, 0.9, 0.95, 0.99].map(percentile => {
+    const threshold = sorted[Math.min(sorted.length - 1, Math.floor(percentile * (sorted.length - 1)))];
+    return { percentile, threshold, exceedanceProbability: exceedanceAt(threshold) };
+  });
+  return { points, references, maximum, samples: sorted.length };
 }

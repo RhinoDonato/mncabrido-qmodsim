@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { arrivalRate, integrateExpectedArrivals, sampleExponential, sampleLognormalService } from '../../src/engines/arrival.js';
+import { arrivalRate, integrateExpectedArrivals, sampleExponential, sampleLognormalService, sampleNhpp } from '../../src/engines/arrival.js';
 import { createSeededRandom } from '../../src/engines/validation.js';
 
 describe('arrival engine', () => {
@@ -27,5 +27,16 @@ describe('arrival engine', () => {
     const serviceTime = sampleLognormalService(2, 0.65, createSeededRandom(8));
 
     expect(serviceTime).toBeGreaterThan(0);
+  });
+
+  it('samples NHPP daily counts close to the integrated intensity', () => {
+    const params = { base: 6, surge: 18, peak: 4.5, sigma: 0.72 };
+    const expected = integrateExpectedArrivals(params, 8);
+    const random = createSeededRandom(3301);
+    const days = 2_000;
+    let total = 0;
+    for (let day = 0; day < days; day += 1) total += sampleNhpp(params, 8, random).length;
+
+    expect(Math.abs(total / days - expected) / expected).toBeLessThan(0.03);
   });
 });

@@ -27,4 +27,12 @@ describe('tracking identifier entropy engine', () => {
   it('refuses to present an insecure fallback when Web Crypto is absent', () => {
     expect(() => secureTrackingToken(12, null)).toThrow(/Web Crypto/);
   });
+
+  it('keeps the largest UI-supported base-62 keyspace finite', () => {
+    const result = calculateEntropy({ length: 24, alphabetSize: 62, guessRate: 0.01 });
+
+    expect(Number.isFinite(result.keyspace)).toBe(true);
+    expect(Number.isFinite(result.averageGuessSeconds)).toBe(true);
+    expect(result.entropyBits).toBeCloseTo(142.9007115, 6);
+  });
 });
