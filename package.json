@@ -1,10 +1,12 @@
 {
   "name": "mncabrido-qmodsim",
   "version": "1.0.0",
-  "description": "",
+  "description": "Interactive mathematical modeling and simulation artifact for MNCabrido iFix repair operations.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build": "vite build",
     "dev": "vite"
   },
   "repository": {
@@ -14,12 +16,13 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/RhinoDonato/mncabrido-qmodsim/issues"
   },
   "homepage": "https://github.com/RhinoDonato/mncabrido-qmodsim#readme",
   "devDependencies": {
-    "vite": "^8.3.8"
+    "vite": "^8.3.8",
+    "vitest": "^4.0.18"
   }
 }

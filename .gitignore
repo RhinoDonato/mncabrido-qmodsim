@@ -1,0 +1,7 @@
+node_modules/
+dist/
+*.log
+__pycache__/
+qmodsim_*_reference.txt
+qmodsim-*-check*.png
+
