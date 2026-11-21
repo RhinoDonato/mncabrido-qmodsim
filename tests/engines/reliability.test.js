@@ -20,4 +20,9 @@ describe('reliability engine', () => {
 
     expect(result.offlineScenarioAvailability).toBeGreaterThan(result.systemAvailability);
   });
+
+  it('rejects impossible reliability parameters', () => {
+    expect(() => availability(0, 4)).toThrow();
+    expect(() => calculateReliability({ terminalMtbf: 4_000, apiMtbf: 3_500, databaseMtbf: 5_000, mttr: 4, smsAvailability: 1.01, fallbackAvailability: 0.992 })).toThrow();
+  });
 });

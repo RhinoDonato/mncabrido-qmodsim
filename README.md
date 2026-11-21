@@ -46,7 +46,7 @@ Open the URL printed by Vite. The production-ready static files are generated in
 | Device Arrivals | Modules 1 & 3 | NHPP rate, sampled/expected daily arrivals |
 | Technician Queue | Module 6 | M/M/c/K blocking, utilization, Wq and W |
 | Job Order Journey | Module 5 | absorption probabilities and Intake-start steps |
-| Annual Risk | Module 4 | seeded ALE, VaR95, ROSI |
+| Annual Risk | Module 4 | seeded ALE, VaR95, Loss Exceedance Curve, ROSI |
 | Deposit Strategy | Module 7 | payoff matrix and verified Nash support |
 | Tracking ID Security | Modules 2 & 10 | entropy, keyspace, guess time, throttling factor |
 | System Reliability | Module 12 | series/parallel availability and annual downtime |
@@ -67,5 +67,16 @@ Open the URL printed by Vite. The production-ready static files are generated in
 - The project has not been deployed by this implementation session, so no live deployment URL is available.
 - Browser interaction was smoke-tested in headless Edge; exhaustive assistive-technology and device testing still requires a human QA pass.
 
-See [AI_USAGE.md](AI_USAGE.md), [SPEC.md](SPEC.md), [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md), and [the requirements audit](docs/QMODSIM_REQUIREMENTS_AUDIT.md).
+## Deployment status
+
+**Live URL: Pending team deployment.** Do not replace this line until the deployed site has been opened and verified.
+
+For GitHub Pages after reviewing and merging the work:
+
+1. In repository **Settings → Pages**, select **GitHub Actions** as the source.
+2. Open **Actions → Deploy GitHub Pages → Run workflow**. The workflow is manual-only and runs `npm ci`, tests, and the production build before deployment.
+3. Open all five generated HTML pages and `lab.html?model=risk` under the repository subpath.
+4. Confirm the FAIR Worker loads, then record the verified URL here.
+
+See [AI_USAGE.md](AI_USAGE.md), [SPEC.md](SPEC.md), [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md), [the final compliance audit](docs/QMODSIM_FINAL_COMPLIANCE_AUDIT.md), and [the security report](docs/SECURITY_AUDIT_REPORT.md).
 

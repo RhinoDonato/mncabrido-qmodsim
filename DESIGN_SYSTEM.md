@@ -41,5 +41,6 @@ The source of truth is the CSS custom-property set in `styles.css`, including `-
 - Existing SVG charts are retained.
 - Canvas alternatives use the established blue, surface, text, and line tokens.
 - Exact quantitative results remain in metric cards; the Markov Canvas also has a full transition table.
+- The FAIR histogram remains the primary distribution view; its optional Loss Exceedance Curve uses the same chart tokens, labeled axes, a VaR₉₅ reference line, and a visible percentile table.
 - Live animation conveys lifecycle state only; static models redraw on parameter/theme/size changes.
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { calculateRosi, sampleBetaPert, simulateFair } from '../../src/engines/fair.js';
+import { calculateRosi, lossExceedanceCurve, sampleBetaPert, simulateFair } from '../../src/engines/fair.js';
 import { createSeededRandom } from '../../src/engines/validation.js';
 
 const defaults = { low: 2, mode: 6, high: 20, vulnerability: 0.35, medianLoss: 25_000, sigma: 0.65 };
@@ -31,5 +31,23 @@ describe('FAIR Monte Carlo engine', () => {
 
   it('rejects invalid Beta-PERT ordering', () => {
     expect(() => simulateFair({ ...defaults, low: 8, mode: 6, trials: 10, seed: 1 })).toThrow(/≤/);
+  });
+
+  it('produces a monotone loss exceedance curve from the simulated loss sample', () => {
+    const result = simulateFair({ ...defaults, trials: 5_000, seed: 409 });
+    const curve = lossExceedanceCurve(result.losses);
+
+    expect(curve.samples).toBe(5_000);
+    expect(curve.points).toHaveLength(21);
+    expect(curve.points.every((point, index) => index === 0 || point.exceedanceProbability <= curve.points[index - 1].exceedanceProbability)).toBe(true);
+    expect(curve.references.find(reference => reference.percentile === 0.95)?.threshold).toBe(result.var95);
+  });
+
+  it('returns zero annual loss when vulnerability is exactly zero', () => {
+    const result = simulateFair({ ...defaults, vulnerability: 0, trials: 1_000, seed: 77 });
+
+    expect(result.ale).toBe(0);
+    expect(result.var95).toBe(0);
+    expect(result.losses.every(loss => loss === 0)).toBe(true);
   });
 });

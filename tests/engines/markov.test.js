@@ -27,4 +27,24 @@ describe('repair lifecycle Markov engine', () => {
     expect(result.expectedStepsFromIntake).toBeLessThan(result.expectedSteps.reduce((sum, value) => sum + value, 0));
     expect(result.paidProbability + result.canceledProbability).toBeCloseTo(1, 12);
   });
+
+  it('returns the fundamental matrix N=(I-Q)⁻¹ and B=N·R', () => {
+    const result = calculateMarkov(defaults);
+    const identityMinusQ = result.q.map((row, index) => row.map((value, column) => Number(index === column) - value));
+
+    identityMinusQ.forEach((row, i) => row.forEach((_, j) => {
+      const product = row.reduce((sum, value, k) => sum + value * result.fundamentalMatrix[k][j], 0);
+      expect(product).toBeCloseTo(Number(i === j), 10);
+    }));
+    expect(result.absorptionMatrix[0][0]).toBeCloseTo(result.paidProbability, 12);
+    expect(result.absorptionMatrix[0][1]).toBeCloseTo(result.canceledProbability, 12);
+  });
+
+  it('keeps warranty rework transient and routes it back to repair or paid release', () => {
+    const { transitionMatrix } = calculateMarkov(defaults);
+
+    expect(transitionMatrix[8][4]).toBe(0.35);
+    expect(transitionMatrix[8][6]).toBe(0.65);
+    expect(transitionMatrix[8].reduce((sum, value) => sum + value, 0)).toBe(1);
+  });
 });

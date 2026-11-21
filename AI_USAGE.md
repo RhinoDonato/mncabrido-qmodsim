@@ -2,7 +2,7 @@
 
 ## 1. Agentic environment and model rationale
 
-This compliance enhancement was performed in Codex, an OpenAI coding-agent environment, on branch `feature/qmodsim-guide-compliance`. The model identifier exposed to the repository session was not available, so it is recorded as **Codex / model identifier requires platform or team input** rather than guessed. Codex was suitable because the task required repository inspection, surgical patches, local testing, headless browser checks, and preservation of a dirty-worktree baseline.
+The original compliance enhancement was performed in Codex, an OpenAI coding-agent environment, on branch `feature/qmodsim-guide-compliance`. Final compliance and release-readiness verification was performed on `feature/qmodsim-final-compliance` from baseline commit `e201c50`. The model identifier exposed to the repository session was not available, so it is recorded as **Codex / model identifier requires platform or team input** rather than guessed. Codex was suitable because the task required repository inspection, surgical patches, local testing, headless browser checks, and preservation of the working-tree baseline.
 
 Historical AI usage before commit `f26d0edabebb67a57bcd7a1af970a4bb22e581be` was not supplied and requires team input.
 
@@ -50,12 +50,28 @@ This is a scoped manual review, not a claim that the unavailable Cloudflare secu
 - **Surgical refinement instruction:** “Rerun the scan as separate single-quoted ripgrep patterns; do not report a security pass for the failed command.”
 - **Verified result:** The rerun found no credential patterns or dynamic-code execution. `innerHTML` findings were reviewed as controlled metadata/numeric SVG templates; free-form request preview output uses `textContent`.
 
+### Iteration 05 — Missing FAIR Loss Exceedance Curve
+
+- **SE phase:** Final mathematical compliance
+- **Source prompt (exact excerpt):** “If missing, add a Loss Exceedance Curve (LEC) without removing the existing Monte Carlo histogram.”
+- **Finding:** The FAIR engine returned sorted losses, ALE, VaR₉₅, and histogram bins, but no exceedance data or LEC view existed.
+- **Surgical refinement instruction:** “Calculate `P(annual loss > threshold)` from the actual seeded annual-loss sample, retain the histogram, and add an optional theme-compatible SVG with a visible percentile table.”
+- **Verified result:** A monotonicity regression test passes; the Worker returns the calculated LEC; the browser showed 50th/75th/90th/95th/99th thresholds from 100,000 simulated years and marked VaR₉₅ at ₱259,651.
+
+### Iteration 06 — Production-only asset failure
+
+- **SE phase:** Release readiness
+- **Audit prompt:** “Inspect the generated `dist/` directory and verify that image references and deep Lab links work in the production version.”
+- **Finding:** Development worked, but runtime guide strings were not transformed by Vite. Production preview returned 404 for `assets/characters/guide-4.png`.
+- **Surgical refinement instruction:** “Resolve only the five existing guide portraits through `new URL(..., import.meta.url)` and pass those browser-native, Vite-compatible URLs to the unchanged guide component.”
+- **Verified result:** The direct XAMPP site loads the original asset paths, while the rebuilt Lab loads a hashed `assets/guide-4-*.png` URL. All five HTML entries and the FAIR Worker remain intact.
+
 ## 4. Code attribution matrix
 
 | Area | Attribution in this session |
 |---|---|
 | Existing HTML/CSS/artwork, scheduling challenge, seven simulation presentations, team/about content | Preserved team-authored baseline; surgically extended by Codex |
-| `src/engines/*`, FAIR worker, UI enhancement modules, Vitest files, Vite config | Generated and refined by Codex from the supplied PDFs and master request |
+| `src/engines/*`, FAIR Worker and LEC, UI enhancement modules, Vitest files, Vite config | Generated and refined by Codex from the supplied PDFs and master requests |
 | Mathematical verification expected values | Codex-authored using analytical identities and deterministic seeds; requires normal team review before academic submission |
 | Documentation files | Codex-authored from observed repository state and actual command evidence |
 | Human-authored/hand-verified routines | Not identified from available history; team input required |
