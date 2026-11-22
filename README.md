@@ -64,19 +64,38 @@ Open the URL printed by Vite. The production-ready static files are generated in
 - Inputs are illustrative until replaced with measured shop data.
 - Queue, Markov, FAIR, game, and reliability assumptions simplify real operations.
 - The strict FAIR convergence check may legitimately fail for some independent seeds; the drawer reports the actual outcome.
-- The project has not been deployed by this implementation session, so no live deployment URL is available.
-- Browser interaction was smoke-tested in headless Edge; exhaustive assistive-technology and device testing still requires a human QA pass.
+- The project notes report an earlier browser smoke test in headless Edge; this does not confirm the current public deployment or every simulation.
+- Exhaustive assistive-technology and device testing still requires a human QA pass.
 
-## Deployment status
+## Live Web Artifact
 
-**Live URL: Pending team deployment.** Do not replace this line until the deployed site has been opened and verified.
+| Item | Details |
+|---|---|
+| Project | MNCabrido iFix QMODSIM |
+| Repository | [github.com/RhinoDonato/mncabrido-qmodsim](https://github.com/RhinoDonato/mncabrido-qmodsim) |
+| Live website | [https://rhinodonato.github.io/mncabrido-qmodsim/](https://rhinodonato.github.io/mncabrido-qmodsim/) |
+| Hosting | GitHub Pages |
+| Deployment method | GitHub Actions, using the `Deploy GitHub Pages` workflow |
+| Deployment branch | `main` |
+| Production build | Vite (`npm run build`) |
+| Build output | `dist/` |
+| Status | GitHub Actions deployment workflow completed successfully. The public website and every simulation have not been independently verified as part of this README update. |
 
-For GitHub Pages after reviewing and merging the work:
+### Deploying future updates
 
-1. In repository **Settings → Pages**, select **GitHub Actions** as the source.
-2. Open **Actions → Deploy GitHub Pages → Run workflow**. The workflow is manual-only and runs `npm ci`, tests, and the production build before deployment.
-3. Open all five generated HTML pages and `lab.html?model=risk` under the repository subpath.
-4. Confirm the FAIR Worker loads, then record the verified URL here.
+The existing workflow is manual-only. After the team is ready to publish updates on `main`, open the repository’s **Actions** tab, select **Deploy GitHub Pages**, choose **Run workflow** on the `main` branch, and start it. The workflow installs locked dependencies with `npm ci`, runs `npm test`, builds the static site with `npm run build`, and deploys `dist/` to GitHub Pages. Check the workflow run result before sharing the update.
+
+### Post-deployment verification checklist
+
+After a deployment, open the live site and check each item; this checklist is not a claim that these checks have already passed:
+
+- [ ] Open all five pages: Scenarios (`index.html`), Lab (`lab.html`), CODEX/Concepts (`concepts.html`), Guides (`guides.html`), and About (`about.html`).
+- [ ] Open and change inputs in all seven Lab models: Device Arrivals, Technician Queue, Job Order Journey, Annual Risk, Deposit Strategy, Tracking ID Security, and System Reliability.
+- [ ] Open Annual Risk and confirm the FAIR Web Worker runs (or the documented fallback works).
+- [ ] Confirm the Loss Exceedance Curve appears with the risk results.
+- [ ] Open the Verification & Validation drawer and run its checks.
+- [ ] Confirm the logo, guide illustrations, and other page images load.
+- [ ] Check page layouts at desktop and narrow/mobile viewport widths.
 
 See [AI_USAGE.md](AI_USAGE.md), [SPEC.md](SPEC.md), [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md), [the final compliance audit](docs/QMODSIM_FINAL_COMPLIANCE_AUDIT.md), and [the security report](docs/SECURITY_AUDIT_REPORT.md).
 
