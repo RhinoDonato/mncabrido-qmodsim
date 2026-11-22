@@ -9,13 +9,13 @@ An interactive mathematical modeling and simulation artifact for MNCabrido iFix,
 - Make mathematical assumptions, units, limitations, and verification results inspectable.
 - Preserve the original team artwork, blue/white identity, scheduling challenge, guides, SVG charts, and five-page structure.
 
-## Team roster
+## Team roster (Group 2)
 
-- Ronen Marces — Intake Guide
-- Rhino Angelo Donato — Workshop Guide
-- Lourdes Carmela Arevalo — Workflow Guide
-- Danica Deramas — Risk Guide
-- Ma. Azriel Garcia — Parts Guide
+- Lourdes Carmela Arevalo
+- Danica Deramas
+- Rhino Angelo Donato
+- Ma. Azriel Garcia
+- Ronen Marces 
 
 ## Technology
 
@@ -81,21 +81,10 @@ Open the URL printed by Vite. The production-ready static files are generated in
 | Build output | `dist/` |
 | Status | GitHub Actions deployment workflow completed successfully. The public website and every simulation have not been independently verified as part of this README update. |
 
-### Deploying future updates
+### Project Documentation
 
-The existing workflow is manual-only. After the team is ready to publish updates on `main`, open the repository’s **Actions** tab, select **Deploy GitHub Pages**, choose **Run workflow** on the `main` branch, and start it. The workflow installs locked dependencies with `npm ci`, runs `npm test`, builds the static site with `npm run build`, and deploys `dist/` to GitHub Pages. Check the workflow run result before sharing the update.
-
-### Post-deployment verification checklist
-
-After a deployment, open the live site and check each item; this checklist is not a claim that these checks have already passed:
-
-- [ ] Open all five pages: Scenarios (`index.html`), Lab (`lab.html`), CODEX/Concepts (`concepts.html`), Guides (`guides.html`), and About (`about.html`).
-- [ ] Open and change inputs in all seven Lab models: Device Arrivals, Technician Queue, Job Order Journey, Annual Risk, Deposit Strategy, Tracking ID Security, and System Reliability.
-- [ ] Open Annual Risk and confirm the FAIR Web Worker runs (or the documented fallback works).
-- [ ] Confirm the Loss Exceedance Curve appears with the risk results.
-- [ ] Open the Verification & Validation drawer and run its checks.
-- [ ] Confirm the logo, guide illustrations, and other page images load.
-- [ ] Check page layouts at desktop and narrow/mobile viewport widths.
-
-See [AI_USAGE.md](AI_USAGE.md), [SPEC.md](SPEC.md), [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md), [the final compliance audit](docs/QMODSIM_FINAL_COMPLIANCE_AUDIT.md), and [the security report](docs/SECURITY_AUDIT_REPORT.md).
-
+- [AI Usage and Engineering Oversight](AI_USAGE.md)
+- [Project Specification](SPEC.md)
+- [Design System](DESIGN_SYSTEM.md)
+- [Final Compliance Audit](docs/QMODSIM_FINAL_COMPLIANCE_AUDIT.md)
+- [Security Audit Report](docs/SECURITY_AUDIT_REPORT.md)
