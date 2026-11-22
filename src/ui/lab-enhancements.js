@@ -2,6 +2,8 @@ import { arrivalRate } from '../engines/arrival.js';
 import { calculateQueue } from '../engines/queue.js';
 import { calculateMarkov, MARKOV_STATES } from '../engines/markov.js';
 import { calculateReliability } from '../engines/reliability.js';
+import { buildDepositGame } from '../engines/gameTheory.js';
+import { compareIdentifierSecurity } from '../engines/entropy.js';
 
 let active = null;
 let animationFrame = 0;
@@ -213,6 +215,89 @@ function drawMarkov(context, width, height, params, palette, phase = 0) {
 }
 
 function drawGeneric(context, width, model, params, palette) {
+  if (model === 'entropy') {
+    const result = compareIdentifierSecurity({ length: params.length, rawRate: params.rate, limitedRate: params.limited });
+    const compact = width < 520;
+    const left = compact ? 100 : 142;
+    const right = width - 22;
+    const barRight = Math.max(left + 30, right - 58);
+    const barWidth = barRight - left;
+    const text = (value, x, y, font, color = palette.ink, align = 'start') => {
+      context.fillStyle = color; context.font = font; context.textAlign = align; context.fillText(value, x, y);
+    };
+    text('IDENTIFIER UNCERTAINTY', 16, 24, '800 10px Nunito, sans-serif', palette.muted);
+    text('More bits means more possible IDs to search', 16, 41, `600 ${compact ? 10 : 12}px Nunito, sans-serif`, palette.muted);
+    const entropyRows = [
+      { label: 'Sequential ID', bits: result.sequential.entropyBits, color: palette.muted },
+      { label: `${params.length}-char random token`, bits: result.random.entropyBits, color: palette.blue },
+    ];
+    entropyRows.forEach((row, index) => {
+      const y = 66 + index * 34;
+      text(row.label, 16, y + 11, `700 ${compact ? 9 : 11}px Nunito, sans-serif`);
+      context.fillStyle = palette.line; context.beginPath(); context.roundRect(left, y, barWidth, 12, 6); context.fill();
+      context.fillStyle = row.color; context.beginPath(); context.roundRect(left, y, Math.max(3, barWidth * row.bits / 160), 12, 6); context.fill();
+      text(`${row.bits.toFixed(1)} bits`, right, y + 11, '700 10px Nunito, sans-serif', palette.muted, 'right');
+    });
+    context.strokeStyle = palette.line; context.beginPath(); context.moveTo(16, 143); context.lineTo(width - 16, 143); context.stroke();
+    text('GUESS RATE · LOG SCALE', 16, 164, '800 10px Nunito, sans-serif', palette.muted);
+    const rateLeft = left, rateRight = barRight, rateWidth = Math.max(30, rateRight - rateLeft);
+    const rateX = rate => rateLeft + (Math.log10(rate) + 2) / 5 * rateWidth;
+    const rates = [
+      { label: 'Unthrottled', value: params.rate, color: palette.blue },
+      { label: 'After back-off', value: params.limited, color: palette.success },
+    ];
+    rates.forEach((rate, index) => {
+      const y = 182 + index * 28;
+      text(rate.label, 16, y + 8, `700 ${compact ? 9 : 11}px Nunito, sans-serif`);
+      context.strokeStyle = palette.line; context.lineWidth = 3; context.beginPath(); context.moveTo(rateLeft, y + 3); context.lineTo(rateRight, y + 3); context.stroke();
+      context.fillStyle = rate.color; context.beginPath(); context.arc(rateX(rate.value), y + 3, 5, 0, Math.PI * 2); context.fill();
+      text(`${rate.value < 1 ? rate.value.toFixed(2) : rate.value.toLocaleString('en-PH')} / sec`, right, y + 8, '700 9px Nunito, sans-serif', palette.muted, 'right');
+    });
+    context.textAlign = 'start';
+    active?.canvas?.setAttribute('aria-label', `Live identifier security comparison. A sequential ID has ${result.sequential.entropyBits.toFixed(1)} bits of entropy. A ${params.length}-character random token has ${result.random.entropyBits.toFixed(1)} bits. Guess rates are ${params.rate} per second unthrottled and ${params.limited} per second after back-off.`);
+    return;
+  }
+  if (model === 'game') {
+    const game = buildDepositGame({ partCost: params.partCost, margin: params.markup, labor: params.labor, friction: params.friction / 100, customerValue: params.customerValue });
+    const compact = width < 520;
+    const left = compact ? 124 : 166;
+    const gap = compact ? 5 : 10;
+    const cellWidth = Math.max(30, (width - left - 16 - gap * 2) / 3);
+    const rowHeight = 61;
+    const top = 64;
+    const max = Math.max(1, ...game.shopPayoffs.flat().map(Math.abs));
+    const money = value => `${value < 0 ? '−' : ''}₱${Math.round(Math.abs(value)).toLocaleString('en-PH')}`;
+    context.fillStyle = palette.ink; context.font = `800 ${compact ? 9 : 11}px Nunito, sans-serif`;
+    game.choices.forEach((choice, column) => {
+      const label = compact ? ['Approve', 'Abandon', 'Cancel'][column] : choice;
+      context.textAlign = 'center'; context.fillText(label, left + column * (cellWidth + gap) + cellWidth / 2, 36);
+    });
+    context.textAlign = 'start';
+    game.policies.forEach((policy, row) => {
+      const y = top + row * rowHeight;
+      const policyLabel = compact ? ['No deposit', '30% deposit', 'Full payment'][row] : policy.name;
+      context.textAlign = 'start'; context.fillStyle = palette.ink; context.font = `700 ${compact ? 9 : 11}px Nunito, sans-serif`;
+      context.fillText(policyLabel, 12, y + 22, left - 24);
+      game.shopPayoffs[row].forEach((value, column) => {
+        const x = left + column * (cellWidth + gap);
+        const center = x + cellWidth / 2;
+        const barWidth = Math.max(2, Math.abs(value) / max * Math.max(4, (cellWidth - 16) / 2));
+        const barX = value < 0 ? center - barWidth : center;
+        context.strokeStyle = palette.line; context.lineWidth = 1;
+        context.beginPath(); context.moveTo(center, y - 3); context.lineTo(center, y + 19); context.stroke();
+        context.fillStyle = value < 0 ? palette.danger : [palette.blue, '#f0a13b', palette.success][column];
+        context.beginPath(); context.roundRect(barX, y, barWidth, 12, 5); context.fill();
+        context.fillStyle = palette.muted; context.font = `700 ${compact ? 9 : 11}px Nunito, sans-serif`; context.textAlign = 'center';
+        context.fillText(money(value), center, y + 36);
+      });
+      context.strokeStyle = palette.line; context.lineWidth = 1;
+      context.beginPath(); context.moveTo(8, y + 48); context.lineTo(width - 8, y + 48); context.stroke();
+    });
+    context.textAlign = 'start'; context.fillStyle = palette.muted; context.font = '11px Nunito, sans-serif';
+    context.fillText('Shop payoff · bars extend from zero; length scales to the largest outcome', 12, 250);
+    active?.canvas?.setAttribute('aria-label', `Live shop payoff matrix in Philippine pesos. ${game.policies.map((policy, row) => `${policy.name}: ${game.choices.map((choice, column) => `${choice} ${money(game.shopPayoffs[row][column])}`).join(', ')}`).join('. ')}. Values update with the sliders.`);
+    return;
+  }
   if (model === 'reliability') {
     const result = calculateReliability({ terminalMtbf: params.terminal, apiMtbf: params.api, databaseMtbf: params.database, mttr: params.repair, smsAvailability: params.sms / 100, fallbackAvailability: params.fallback / 100 });
     const labels = ['Terminal', 'API', 'Ledger', 'SMS ∥ Email'];
@@ -227,8 +312,30 @@ function drawGeneric(context, width, model, params, palette) {
     return;
   }
   if (model === 'risk' && params.riskResult) {
-    const { bins, bmax } = params.riskResult;
-    bins.forEach((value, index) => { const barWidth = (width - 54) / bins.length; const height = value / bmax * 170; context.fillStyle = palette.blue; context.fillRect(32 + index * barWidth, 215 - height, barWidth - 3, height); });
+    const { bins, bmax, var95, max, signature } = params.riskResult;
+    const left = 38, right = width - 18, top = 48, bottom = 208;
+    const plotWidth = right - left, plotHeight = bottom - top;
+    const fresh = signature === [params.low, params.mode, params.high, params.vuln / 100, params.severity, params.sigma, 20261121].join('|');
+    context.strokeStyle = palette.line; context.lineWidth = 1;
+    for (let tick = 0; tick <= 4; tick += 1) {
+      const y = top + tick * plotHeight / 4;
+      context.beginPath(); context.moveTo(left, y); context.lineTo(right, y); context.stroke();
+    }
+    const slot = plotWidth / bins.length;
+    bins.forEach((value, index) => {
+      const barHeight = value / Math.max(1, bmax) * plotHeight;
+      context.fillStyle = palette.blue;
+      context.fillRect(left + index * slot + 1, bottom - barHeight, Math.max(1, slot - 2), barHeight);
+    });
+    const markerX = left + Math.min(1, var95 / Math.max(1, max)) * plotWidth;
+    context.strokeStyle = '#f0a13b'; context.lineWidth = 2; context.setLineDash([5, 4]);
+    context.beginPath(); context.moveTo(markerX, top); context.lineTo(markerX, bottom); context.stroke(); context.setLineDash([]);
+    context.fillStyle = palette.ink; context.font = '800 11px Nunito, sans-serif';
+    context.fillText(fresh ? 'Annual loss distribution · 100,000 simulated years' : 'Previous loss distribution · resampling', left, 27);
+    context.fillStyle = palette.muted; context.font = '10px Nunito, sans-serif'; context.textAlign = 'right';
+    context.fillText(`95th percentile ${Math.round(var95).toLocaleString('en-PH')} PHP`, right, 27); context.textAlign = 'start';
+    context.fillText('₱0', left, 229); context.textAlign = 'right'; context.fillText(`${Math.round(max).toLocaleString('en-PH')} PHP`, right, 229); context.textAlign = 'start';
+    active?.canvas?.setAttribute('aria-label', `${fresh ? 'Current' : 'Previous'} annual loss distribution from 100,000 simulated years. The 95th percentile loss is ${Math.round(var95).toLocaleString('en-PH')} Philippine pesos.${fresh ? '' : ' A new simulation is running for the changed slider settings.'}`);
     return;
   }
   context.fillStyle = palette.pale; context.fillRect(24, 54, width - 48, 150);
