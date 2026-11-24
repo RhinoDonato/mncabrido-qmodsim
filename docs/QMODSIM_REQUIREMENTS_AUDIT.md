@@ -60,7 +60,7 @@ Status vocabulary follows the request: **COMPLIANT**, **PARTIALLY COMPLIANT**, *
 | RA 10173 crosswalk | Student Guide p.2 | Risk description mentioned RA 10173 | COMPLIANT | NPC/Lawphil-sourced legal duties separated from engineering recommendations. |
 | Light/dark persistence | Student Guide p.12 | Existing local-storage toggle | COMPLIANT | Preserved; new Canvas redraws with theme. |
 | Contrast, keyboard, focus, mobile, reduced motion | Master §10 | Partial | PARTIALLY COMPLIANT | Focus/touch/responsive/reduced-motion implementation added; automated contrast ratios and assistive-technology testing remain human QA. |
-| Repository XSS/secrets/input/dependency review | Student Guide p.8; Master §11 | No audit record | COMPLIANT | Scoped scan/manual review and `npm audit`; results in `docs/SECURITY_AUDIT.md`. |
+| Repository XSS/secrets/input/dependency review | Student Guide p.8; Master §11 | No audit record | COMPLIANT | Scoped scan/manual review and `npm audit`; current results in `docs/SECURITY_AND_SKILL_AUDIT.md`. |
 | Third-party skill inspection | Student Guide pp.2–5,8,14 | No record | COMPLIANT | Two activated skills read before use; scoped OWASP-oriented log in `AI_USAGE.md`. |
 | Cloudflare security-audit skill pass | Student Guide p.16 | Skill unavailable | BLOCKED | Not claimed. Local security review used; formal Cloudflare skill execution requires that skill to be installed/available. |
 | `SPEC.md` | Student Guide pp.3,6 | Missing | COMPLIANT | Added contracts, units, assumptions, outputs, verification and nonfunctional requirements. |

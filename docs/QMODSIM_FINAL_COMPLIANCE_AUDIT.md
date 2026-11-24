@@ -47,7 +47,7 @@ The artifact is **mostly compliant and release-ready for static deployment**, wi
 | Validation metadata and truthful status | Final prompt §5 | Standard, measured value, error, parameters, seeds/sample sizes, timestamp | Browser and source review | PASS | None |
 | Drawer keyboard containment and focus return | Final prompt §5 | Tab loop, Escape close, trigger restoration | Browser keyboard-event audit | PASS | Human screen-reader pass remains recommended |
 | Automated mathematical tests | Student Guide pp.6–7, 16 | Vitest suite | 8 files, 42 tests, all passing | PASS | None |
-| Repository security audit | Student Guide pp.7–8, 16 | Final report and source/dependency scans | `docs/SECURITY_AUDIT_REPORT.md` | PASS | Backend security remains out of scope |
+| Repository security audit | Student Guide pp.7–8, 16 | Final report and source/dependency scans | `docs/SECURITY_AND_SKILL_AUDIT.md` | PASS | Backend security remains out of scope |
 | Cloudflare security audit skill | Student Guide pp.4, 7, 16 | Skill absent from installed catalog | Skill inventory | BLOCKED | Team may install from a trusted source and rerun after review |
 | OWASP-oriented skill vetting log | Student Guide pp.4–5, 14 | Actual activated/inspected skills documented | Complete SKILL.md review | PASS | None |
 | Existing civic-blue design and five pages preserved | Student Guide pp.11–12; preservation rules | No redesign or page removal | Visual/source comparison | PASS | None |
