@@ -9,7 +9,7 @@ An interactive mathematical modeling and simulation artifact for MNCabrido iFix,
 - Make mathematical assumptions, units, limitations, and verification results inspectable.
 - Preserve the original team artwork, blue/white identity, scheduling challenge, guides, SVG charts, and five-page structure.
 
-## Team roster (Group 2)
+## Team Roster (Group 2)
 
 - Lourdes Carmela Arevalo
 - Danica Deramas
@@ -19,7 +19,7 @@ An interactive mathematical modeling and simulation artifact for MNCabrido iFix,
 
 ## Technology
 
-Static HTML, CSS, JavaScript ES modules, HTML5 Canvas, SVG, Web Workers, Web Crypto, Vite, and Vitest. No backend, database, authentication system, or customer-record connection is included.
+Static HTML, CSS, JavaScript ES modules, HTML5 Canvas, SVG, Web Workers, Web Crypto, Vite, and Vitest.
 
 ## Setup and commands
 
@@ -55,8 +55,7 @@ Open the URL printed by Vite. The production-ready static files are generated in
 
 - The enumeration walkthrough is isolated math against mock identifiers; it sends no attack traffic.
 - Secure sample references use `crypto.getRandomValues()` with rejection sampling.
-- Random identifiers do not replace server-side authorization, rate limiting, monitoring, or audit logs.
-- This static artifact stores only the light/dark preference. It does not store real customer details or claim implemented offline customer-data caching.
+- QMODSIM is a client-side educational simulation and does not include a production backend. Authentication, database storage, server-side authorization, and rate limiting are outside its current scope.
 - RA 10173 material is educational, distinguishes legal text from recommended controls, and is not legal advice.
 
 ## Known limitations
@@ -87,4 +86,5 @@ Open the URL printed by Vite. The production-ready static files are generated in
 - [Project Specification](SPEC.md)
 - [Design System](DESIGN_SYSTEM.md)
 - [Final Compliance Audit](docs/QMODSIM_FINAL_COMPLIANCE_AUDIT.md)
-- [Security Audit Report](docs/SECURITY_AUDIT_REPORT.md)
+- [Security and Skill Audit](docs/SECURITY_AND_SKILL_AUDIT.md)
+- [Mathematical Verification](docs/MATHEMATICAL_VERIFICATION.md)
